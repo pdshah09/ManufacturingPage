@@ -1,6 +1,8 @@
+"use client";
 // (pages)/home/page.tsx — pixel-perfect Odoo Manufacturing page replica
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useCallback } from "react";
 
 /* ── Nav Data ── */
 const NAV_GROUPS_ROW1 = [
@@ -130,17 +132,57 @@ const RELATED_APPS = [
   },
 ];
 
+const SHOWREEL_URL = "https://qvoo.io/wp-content/uploads/2026/01/Show-Reel-2.mp4";
+
 export default function HomePage() {
+  const [videoOpen, setVideoOpen] = useState(false);
+
+  const openVideo = useCallback(() => setVideoOpen(true), []);
+  const closeVideo = useCallback(() => setVideoOpen(false), []);
+
   return (
     <>
       <Link className="o_skip_to_content" href="#wrap">Skip to Content</Link>
 
+      {/* ── In-page Video Modal ── */}
+      {videoOpen && (
+        <div
+          className="video-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Qvoo showreel video"
+          onClick={closeVideo}
+        >
+          <div
+            className="video-modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="video-modal-close"
+              onClick={closeVideo}
+              aria-label="Close video"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </button>
+            <video
+              src={SHOWREEL_URL}
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              controlsList="nodownload"
+              style={{ width: "100%", height: "100%", objectFit: "cover", backgroundColor: "#000", display: "block" }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* ─────────────── NAVBAR ─────────────── */}
       <header id="top" className="o_main_header">
         <div className="o_header_inner">
-          {/* <Link href="/" className="o_logo" aria-label="Odoo">
-            <span className="sr-only">Odoo</span>
-          </Link> */}
           <Link href="/" aria-label="Qvoo">
             <Image
               src="/images/QVOO_Logo.png"
@@ -250,45 +292,17 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── 2. Hero Image ── */}
-        {/* <section className="s_wd_hero_image">
-          <div className="o_we_shape o_illustration_doodle_01" aria-hidden="true"/>
-          <div className="container">
-            <div className="hero_img_wrap">
-              <div className="x_wd_corner_highlight s_panel_video">
-                <Link href="#" className="btn_video_play" aria-label="Watch Odoo Manufacturing demo">
-                  
-                  <Image
-                    src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/hero_image.webp"
-                    className="img-thumbnail"
-                    alt="Odoo Manufacturing app interface"
-                    width={1100} height={620} loading="eager" decoding="async"
-                  />
-
-                  <Image
-                    src="https://odoocdn.com/openerp_website/static/src/img/icons/play.svg"
-                    className="x_wd_video_play_icon"
-                    alt="" aria-hidden="true"
-                    width={80} height={80} loading="eager"
-                  />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section> */}
-
+        {/* ── 2. Hero Image / Video Trigger ── */}
         <section className="s_wd_hero_image">
           <div className="o_we_shape o_illustration_doodle_01" aria-hidden="true" />
           <div className="container">
             <div className="hero_img_wrap">
               <div className="x_wd_corner_highlight s_panel_video">
-                {/* Thumbnail acts as YouTube link opener */}
-                <a
-                  href="https://www.youtube.com/watch?v=uWg9-UUr4Dw"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
                   className="btn_video_play"
-                  aria-label="Watch Qvoo Manufacturing demo on YouTube"
+                  aria-label="Watch Qvoo Manufacturing showreel"
+                  onClick={openVideo}
                 >
                   <Image
                     src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/hero_image.webp"
@@ -309,7 +323,7 @@ export default function HomePage() {
                     height={80}
                     loading="eager"
                   />
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -705,7 +719,7 @@ export default function HomePage() {
         </div>
         <div className="o_footer_bottom">
           <div className="container o_footer_bottom_inner">
-            <span>© {new Date().getFullYear()} Odoo S.A.</span>
+            <span>&copy; {new Date().getFullYear()} Odoo S.A.</span>
             <div className="o_footer_bottom_links">
               <Link href="/legal">Legal</Link>
               <Link href="/privacy">Privacy</Link>
