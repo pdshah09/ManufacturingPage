@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Odoo Manufacturing | Simplify Your Production",
+  title: "Real Estate CRM | Qvoo – Manage Leads & Close Deals Faster",
   description:
-    "Run your entire production floor from one integrated platform. Work orders, quality checks, MES, and real-time capacity planning — all in Odoo.",
+    "Real Estate CRM Qvoo is designed for agents, brokers, and developers to simplify lead management, property listings, and client communication.",
 };
 
 export default function RootLayout({
