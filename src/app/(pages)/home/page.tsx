@@ -1,5 +1,4 @@
 // (pages)/home/page.tsx
-import Image from "next/image";
 import Link from "next/link";
 
 /* ── Nav Data ── */
@@ -109,7 +108,7 @@ export default function HomePage() {
             <ul className="navbar__menu-center">
               {NAV_ITEMS.map((item) => (
                 <li key={item.label} className="group">
-                  {item.href ? (
+                  {"href" in item && item.href ? (
                     <Link href={item.href}>
                       <span>{item.label}</span>
                     </Link>
@@ -120,13 +119,17 @@ export default function HomePage() {
                   )}
 
                   {item.groups.length > 0 && (
-                    <div className="navbar__dropdown" role="region" aria-label={`${item.label} menu`}>
+                    <div
+                      className="navbar__dropdown"
+                      role="region"
+                      aria-label={`${item.label} menu`}
+                    >
                       <div className="navbar__dropdown-inner">
                         {item.groups.map((group) => (
                           <div key={group.title} className="navbar__dropdown-group">
                             <div
                               className="navbar__dropdown-group-title"
-                              style={{ color: group.color, borderColor: group.color }}
+                              style={{ color: group.color }}
                             >
                               {group.title}
                             </div>
@@ -140,7 +143,7 @@ export default function HomePage() {
                           </div>
                         ))}
                       </div>
-                      {item.footer && (
+                      {"footer" in item && item.footer && (
                         <div className="navbar__dropdown-footer">
                           {item.footer.map((f) => (
                             <a key={f.label} href={f.href}>
@@ -158,7 +161,13 @@ export default function HomePage() {
 
           {/* Right actions */}
           <div className="navbar__actions" aria-label="Account actions">
-            <a href="https://wa.me/916357077743" className="btn-whatsapp show-mobile-only" aria-label="Contact via WhatsApp">
+            <a
+              href="https://wa.me/916357077743"
+              className="btn-whatsapp"
+              aria-label="Contact via WhatsApp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               WhatsApp
             </a>
             <Link href="/web/login">Sign in</Link>
@@ -168,9 +177,24 @@ export default function HomePage() {
           </div>
 
           {/* Mobile hamburger */}
-          <button className="navbar__hamburger" aria-label="Open menu" aria-expanded="false">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <button
+            className="navbar__hamburger"
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 5h16M2 10h16M2 15h16"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         </div>
@@ -178,7 +202,6 @@ export default function HomePage() {
 
       {/* ── Main ── */}
       <main id="wrap">
-
         {/* ── Hero Section ── */}
         <section className="hero" aria-label="Hero">
           <div className="hero__bg-doodle" aria-hidden="true" />
@@ -191,7 +214,8 @@ export default function HomePage() {
                 <em style={{ color: "var(--color-primary)" }}>simplified</em>
               </h1>
               <p className="hero__subtitle">
-                Run your entire production floor from one integrated platform. From work orders to quality checks — all in real time.
+                Run your entire production floor from one integrated platform.
+                From work orders to quality checks — all in real time.
               </p>
               <div className="hero__ctas">
                 <Link href="/trial?selected_app=mrp" className="btn-primary">
@@ -208,16 +232,18 @@ export default function HomePage() {
           <div className="hero__media">
             <div className="hero__media-wrap">
               <a href="#" aria-label="Watch Odoo Manufacturing demo video">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/hero_image.webp"
                   alt="Odoo Manufacturing app interface"
                   width={1200}
                   height={680}
                   className="hero__media-img"
                   loading="lazy"
-                  priority={false}
+                  decoding="async"
                 />
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="https://odoocdn.com/openerp_website/static/src/img/icons/play.svg"
                   alt=""
                   aria-hidden="true"
@@ -225,6 +251,7 @@ export default function HomePage() {
                   height={80}
                   className="hero__play-btn"
                   loading="lazy"
+                  decoding="async"
                 />
               </a>
             </div>
@@ -233,7 +260,8 @@ export default function HomePage() {
 
         {/* ── CTA Banner ── */}
         <div className="cta-banner" aria-label="Callout">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_persona/bg_blue.svg"
             alt=""
             aria-hidden="true"
@@ -241,11 +269,13 @@ export default function HomePage() {
             height={120}
             className="cta-banner__bg"
             loading="lazy"
+            decoding="async"
           />
           <div className="cta-banner__bubble">
             <em>Check out MES in action!</em>
           </div>
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_persona/bob.png"
             alt=""
             aria-hidden="true"
@@ -253,48 +283,71 @@ export default function HomePage() {
             height={60}
             className="cta-banner__avatar"
             loading="lazy"
+            decoding="async"
           />
         </div>
 
         {/* ── Feature Sections ── */}
         {FEATURE_SECTIONS.map((feat) => (
-          <section key={feat.id} className="section" aria-labelledby={`feat-${feat.id}`}>
+          <section
+            key={feat.id}
+            className="section"
+            aria-labelledby={`feat-${feat.id}`}
+          >
             <div className="section__inner">
               {feat.arrow && (
-                <div className="feature-row" style={{ gridTemplateColumns: "1fr" }}>
-                  <div style={{ display: "flex", justifyContent: "flex-end", paddingRight: "50%" }}>
-                    <Image
-                      src={feat.arrow}
-                      alt=""
-                      aria-hidden="true"
-                      width={60}
-                      height={120}
-                      className="arrow-divider"
-                      loading="lazy"
-                    />
-                  </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    paddingRight: "50%",
+                    marginBottom: "var(--space-6)",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={feat.arrow}
+                    alt=""
+                    aria-hidden="true"
+                    width={60}
+                    height={120}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               )}
-              <div className={`feature-row${feat.reverse ? " feature-row--reverse" : ""}`}>
+              <div
+                className={`feature-row${
+                  feat.reverse ? " feature-row--reverse" : ""
+                }`}
+              >
                 <div className="feature-row__text">
-                  {feat.eyebrow && <span className="section__eyebrow">{feat.eyebrow}</span>}
+                  {feat.eyebrow && (
+                    <span className="section__eyebrow">{feat.eyebrow}</span>
+                  )}
                   <h2 id={`feat-${feat.id}`} className="section__title">
                     {feat.title}
                   </h2>
                   {feat.body.map((para, i) => (
                     <p key={i} className="section__body">
-                      {i === 0 ? <strong>{para.split(". ")[0] + "."}</strong> : null}
-                      {i === 0 ? " " + para.split(". ").slice(1).join(". ") : para}
+                      {i === 0 ? (
+                        <strong>{para.split(". ")[0] + "."}</strong>
+                      ) : null}
+                      {i === 0
+                        ? " " + para.split(". ").slice(1).join(". ")
+                        : para}
                     </p>
                   ))}
                 </div>
                 <div className="feature-row__media">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={feat.image.src}
                     alt={feat.image.alt}
                     width={700}
                     height={440}
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>
@@ -303,25 +356,23 @@ export default function HomePage() {
         ))}
 
         {/* ── Stats / Social Proof ── */}
-        <section className="section section--gray section--center" aria-label="Stats">
+        <section
+          className="section section--gray section--center"
+          aria-label="Stats"
+        >
           <div className="section__inner">
             <div className="stats-grid">
-              <div>
-                <div className="stat__number">12M+</div>
-                <div className="stat__label">Users worldwide</div>
-              </div>
-              <div>
-                <div className="stat__number">77+</div>
-                <div className="stat__label">Countries</div>
-              </div>
-              <div>
-                <div className="stat__number">45+</div>
-                <div className="stat__label">Integrated apps</div>
-              </div>
-              <div>
-                <div className="stat__number">98%</div>
-                <div className="stat__label">Customer satisfaction</div>
-              </div>
+              {[
+                { number: "12M+", label: "Users worldwide" },
+                { number: "77+", label: "Countries" },
+                { number: "45+", label: "Integrated apps" },
+                { number: "98%", label: "Customer satisfaction" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="stat__number">{s.number}</div>
+                  <div className="stat__label">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -333,14 +384,22 @@ export default function HomePage() {
           style={{ paddingBlock: "var(--space-20)" }}
         >
           <div className="section__inner">
-            <h2 className="section__title" style={{ marginBottom: "var(--space-4)", textAlign: "center" }}>
+            <h2
+              className="section__title"
+              style={{ marginBottom: "var(--space-4)", textAlign: "center" }}
+            >
               Ready to streamline your production?
             </h2>
             <p
               className="section__body"
-              style={{ marginInline: "auto", textAlign: "center", marginBottom: "var(--space-8)" }}
+              style={{
+                marginInline: "auto",
+                textAlign: "center",
+                marginBottom: "var(--space-8)",
+              }}
             >
-              Join thousands of manufacturers already using Odoo to run leaner, faster operations.
+              Join thousands of manufacturers already using Odoo to run leaner,
+              faster operations.
             </p>
             <div className="hero__ctas" style={{ justifyContent: "center" }}>
               <Link href="/trial?selected_app=mrp" className="btn-primary">
@@ -358,7 +417,19 @@ export default function HomePage() {
       <footer className="site-footer" aria-label="Site footer">
         <div className="footer__inner">
           <div className="footer__brand">
-            <div style={{ width: 68, height: 22, backgroundImage: "url('https://www.odoo.com/openerp_website/static/src/img/2016/logos/odoo_logo.svg')", backgroundSize: "contain", backgroundRepeat: "no-repeat", marginBottom: "var(--space-4)" }} aria-label="Odoo" role="img" />
+            <div
+              style={{
+                width: 68,
+                height: 22,
+                backgroundImage:
+                  "url('https://www.odoo.com/openerp_website/static/src/img/2016/logos/odoo_logo.svg')",
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                marginBottom: "var(--space-4)",
+              }}
+              aria-label="Odoo"
+              role="img"
+            />
             <p style={{ fontSize: "var(--text-sm)", maxWidth: "36ch" }}>
               The only platform you will ever need to help run your business.
             </p>
@@ -367,36 +438,62 @@ export default function HomePage() {
           <div>
             <p className="footer__heading">Product</p>
             <ul className="footer__links">
-              <li><Link href="/app/manufacturing">Manufacturing</Link></li>
-              <li><Link href="/app/inventory">Inventory</Link></li>
-              <li><Link href="/app/accounting">Accounting</Link></li>
-              <li><Link href="/app/crm">CRM</Link></li>
+              <li>
+                <Link href="/app/manufacturing">Manufacturing</Link>
+              </li>
+              <li>
+                <Link href="/app/inventory">Inventory</Link>
+              </li>
+              <li>
+                <Link href="/app/accounting">Accounting</Link>
+              </li>
+              <li>
+                <Link href="/app/crm">CRM</Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <p className="footer__heading">Resources</p>
             <ul className="footer__links">
-              <li><Link href="/documentation">Documentation</Link></li>
-              <li><Link href="/slides">Tutorials</Link></li>
-              <li><Link href="/forum">Forum</Link></li>
-              <li><Link href="/blog">Blog</Link></li>
+              <li>
+                <Link href="/documentation">Documentation</Link>
+              </li>
+              <li>
+                <Link href="/slides">Tutorials</Link>
+              </li>
+              <li>
+                <Link href="/forum">Forum</Link>
+              </li>
+              <li>
+                <Link href="/blog">Blog</Link>
+              </li>
             </ul>
           </div>
 
           <div>
             <p className="footer__heading">Company</p>
             <ul className="footer__links">
-              <li><Link href="/about">About us</Link></li>
-              <li><Link href="/partners">Partners</Link></li>
-              <li><Link href="/jobs">Careers</Link></li>
-              <li><Link href="/contactus">Contact</Link></li>
+              <li>
+                <Link href="/about">About us</Link>
+              </li>
+              <li>
+                <Link href="/partners">Partners</Link>
+              </li>
+              <li>
+                <Link href="/jobs">Careers</Link>
+              </li>
+              <li>
+                <Link href="/contactus">Contact</Link>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="footer__bottom">
-          <span>© {new Date().getFullYear()} Odoo S.A. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} Odoo S.A. All rights reserved.
+          </span>
           <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
@@ -406,69 +503,3 @@ export default function HomePage() {
     </>
   );
 }
-
-
-// export default function HomePage() {
-//   return (
-//     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-//       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-//         <h1>PARAM</h1>
-//         <Image
-//           className="dark:invert"
-//           src="/next.svg"
-//           alt="Next.js logo"
-//           width={100}
-//           height={20}
-//           priority
-//         />
-//         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-//           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-//             To get started, edit the page.tsx file.
-//           </h1>
-//           <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-//             Looking for a starting point or more instructions? Head over to{" "}
-//             <a
-//               href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-//               className="font-medium text-zinc-950 dark:text-zinc-50"
-//             >
-//               Templates
-//             </a>{" "}
-//             or the{" "}
-//             <a
-//               href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-//               className="font-medium text-zinc-950 dark:text-zinc-50"
-//             >
-//               Learning
-//             </a>{" "}
-//             center.
-//           </p>
-//         </div>
-//         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-//           <a
-//             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-//             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             <Image
-//               className="dark:invert"
-//               src="/vercel.svg"
-//               alt="Vercel logomark"
-//               width={16}
-//               height={16}
-//             />
-//             Deploy Now
-//           </a>
-//           <a
-//             className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-//             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             Documentation
-//           </a>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
