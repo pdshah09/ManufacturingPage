@@ -33,16 +33,16 @@ export default function Navbar() {
       className={`o_main_header${scrolled ? " o_main_header--scrolled" : ""}`}
     >
       <div className="o_header_inner">
-        {/* Logo */}
+        {/* Logo — Qvoo_long */}
         <Link href="/" aria-label="Qvoo">
           <Image
-            src="/images/QVOO_Logo.png"
-            alt="Qvoo – Real Estate CRM"
-            width={120}
-            height={120}
+            src="/images/Qvoo_long.png"
+            alt="Qvoo"
+            width={160}
+            height={36}
             loading="eager"
             priority
-            style={{ width: "auto", height: "90px" }}
+            style={{ width: "auto", height: "36px", objectFit: "contain" }}
           />
         </Link>
 
@@ -70,7 +70,6 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           <ul>
-            {/* Manufacturing mega-dropdown */}
             <li className="o_nav_has_dropdown" ref={megaRef}>
               <button
                 className="o_nav_mega_btn"
@@ -82,25 +81,14 @@ export default function Navbar() {
                 <span className="o_app_name_title">Manufacturing</span>
                 <svg
                   className={`o_nav_chevron${megaOpen ? " o_nav_chevron--open" : ""}`}
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  aria-hidden="true"
+                  width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"
                 >
-                  <path
-                    d="M2 4l4 4 4-4"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
+                    strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
               {megaOpen && <MegaMenu />}
             </li>
-
-            {/* Sub nav links */}
             {SUB_NAV_LINKS.map((l) => (
               <li key={l.label}>
                 <Link
@@ -117,15 +105,10 @@ export default function Navbar() {
         {/* CTA buttons */}
         <ul className="o_header_buttons">
           <li>
-            <Link href="/web/login" className="o_nav_link">
-              Sign in
-            </Link>
+            <Link href="/web/login" className="o_nav_link">Sign in</Link>
           </li>
           <li>
-            <Link
-              href="/trial?selected_app=mrp"
-              className="btn btn-primary btn-sm trial_link"
-            >
+            <Link href="/trial?selected_app=mrp" className="btn btn-primary btn-sm trial_link">
               Try it free
             </Link>
           </li>
