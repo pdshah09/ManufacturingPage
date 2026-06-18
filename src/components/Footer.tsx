@@ -6,7 +6,7 @@ export default function Footer() {
     <footer id="bottom" className="o_footer">
       <div id="footer" className="container">
         <Image
-          src="/images/Qvoo_long.png"
+          src="/images/QVOO_Logo.png"
           alt="Qvoo"
           width={120}
           height={32}

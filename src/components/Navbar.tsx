@@ -36,13 +36,13 @@ export default function Navbar() {
         {/* Logo — Qvoo_long */}
         <Link href="/" aria-label="Qvoo">
           <Image
-            src="/images/Qvoo_long.png"
+            src="/images/QVOO_Logo.png"
             alt="Qvoo"
             width={160}
-            height={36}
+            height={90}
             loading="eager"
             priority
-            style={{ width: "auto", height: "36px", objectFit: "contain" }}
+            style={{ width: "auto", height: "90px", objectFit: "contain" }}
           />
         </Link>
 
