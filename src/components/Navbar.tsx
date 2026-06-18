@@ -1,25 +1,25 @@
 "use client";
-import Image from "next/image";
+
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import MegaMenu from "./MegaMenu";
 import { SUB_NAV_LINKS } from "@/data/nav";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [megaOpen, setMegaOpen]     = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
   const [mobileMegaOpen, setMobileMegaOpen] = useState(false);
-  const [scrolled, setScrolled]     = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const megaRef = useRef<HTMLLIElement>(null);
 
-  /* ── scroll shadow ── */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* ── close mega on outside click (desktop) ── */
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (megaRef.current && !megaRef.current.contains(e.target as Node)) {
@@ -30,7 +30,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  /* ── lock body scroll when mobile drawer open ── */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -43,7 +42,7 @@ export default function Navbar() {
 
   return (
     <header id="top" className={`o_main_header${scrolled ? " o_main_header--scrolled" : ""}`}>
-      <div className="o_header_inner">
+      <div className="o_header_inner o_header_inner--replica">
 
         {/* ── Logo ── */}
         <Link href="/" aria-label="Qvoo" className="o_header_logo" onClick={closeAll}>
@@ -54,10 +53,10 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* ── Desktop primary nav (hidden on mobile) ── */}
-        <nav className="o_primary_nav" aria-label="Main navigation">
+        {/* ── Desktop nav (hidden below 1024px) ── */}
+        <nav className="o_primary_nav_desktop" aria-label="Main navigation">
           <ul>
-            {/* Manufacturing + mega-menu */}
+            {/* Manufacturing trigger */}
             <li className="o_nav_has_dropdown" ref={megaRef}
               onMouseLeave={() => setMegaOpen(false)}>
               <button
@@ -78,7 +77,7 @@ export default function Navbar() {
               {megaOpen && <MegaMenu onClose={() => setMegaOpen(false)} />}
             </li>
 
-            {/* Sub-nav links: Overview, Features, PLM, Maintenance, Quality */}
+            {/* Overview · Features · PLM · Maintenance · Quality */}
             {SUB_NAV_LINKS.map((l) => (
               <li key={l.label}>
                 <Link
@@ -92,9 +91,9 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* ── CTA: Sign in + Try it free ── */}
+        {/* ── Desktop CTA: Sign in + Try it free ── */}
         <ul className="o_header_buttons">
-          <li className="hidden lg:flex">
+          <li className="o_header_signin_item">
             <Link href="/web/login" className="o_nav_link o_nav_signin">Sign in</Link>
           </li>
           <li>
@@ -104,28 +103,20 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* ── Mobile hamburger (shows on <1024px) ── */}
+        {/* ── Mobile hamburger ── */}
         <button
-          className="o_mobile_menu_toggle"
+          className={`o_mobile_menu_toggle${mobileOpen ? " o_mobile_menu_toggle--open" : ""}`}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
         >
-          {mobileOpen ? (
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-              <path d="M4 4l14 14M18 4L4 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/>
-            </svg>
-          ) : (
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-              <path d="M2 5.5h18M2 11h18M2 16.5h18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/>
-            </svg>
-          )}
+          <span />
+          <span />
+          <span />
         </button>
       </div>
 
-      {/* ══════════════════════════════════════
-          MOBILE DRAWER
-      ══════════════════════════════════════ */}
+      {/* ── Mobile drawer ── */}
       <nav
         className={`o_primary_nav${mobileOpen ? " o_primary_nav--open" : ""}`}
         aria-label="Mobile navigation"
@@ -133,7 +124,6 @@ export default function Navbar() {
         style={{ display: mobileOpen ? "flex" : "none" }}
       >
         <ul>
-          {/* Manufacturing accordion */}
           <li>
             <button
               className="o_nav_mega_btn"
@@ -149,8 +139,6 @@ export default function Navbar() {
                   strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-
-            {/* Inline mega-menu for mobile */}
             {mobileMegaOpen && (
               <div className="o_mobile_mega">
                 <MegaMenu mobile onClose={closeAll} />
@@ -158,7 +146,6 @@ export default function Navbar() {
             )}
           </li>
 
-          {/* Overview / Features / PLM / Maintenance / Quality */}
           {SUB_NAV_LINKS.map((l) => (
             <li key={l.label}>
               <Link
@@ -171,14 +158,9 @@ export default function Navbar() {
             </li>
           ))}
 
-          {/* Sign in inside mobile drawer */}
           <li>
-            <Link
-              href="/web/login"
-              onClick={closeAll}
-              className="o_nav_mega_btn"
-              style={{ width: "100%" }}
-            >
+            <Link href="/web/login" onClick={closeAll}
+              className="o_nav_mega_btn" style={{ width: "100%" }}>
               Sign in
             </Link>
           </li>

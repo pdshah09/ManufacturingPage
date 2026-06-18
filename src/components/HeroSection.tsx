@@ -10,41 +10,58 @@ export default function HeroSection() {
 
   return (
     <>
-      {/* Hero banner */}
-      <section className="s_wd_hero_banner">
+      {/* ── Hero copy block ── */}
+      <section className="s_wd_hero_banner s_wd_hero_banner--replica">
         <div className="container">
-          <h1 className="display-1">
-            The <span className="x_wd_display_underline">future</span> of MRP
-          </h1>
-          <p className="lead" style={{ marginBottom: "0.5rem" }}>
-            MRP + MES + PLM + Quality + Shop Floor Maintenance.<br className="hidden sm:block" />
-            All you need on one single platform, fast and easy to use.
-          </p>
-          <div className="hero_cta_group">
-            <div className="dropdown o_schedule_demo">
-              <button className="btn btn-primary" aria-haspopup="true">
+          <div className="hero-copy">
+
+            <h1 className="hero-title-original">
+              The{" "}
+              <span className="hero-title-accent">future</span>
+              {" "}of MRP
+            </h1>
+
+            <p className="hero-lead-original">
+              MRP + MES + PLM + Quality + Shop Floor + Maintenance.<br />
+              All you need on one single platform, fast and easy to use.
+            </p>
+
+            <div className="hero-cta-original">
+              <Link
+                className="btn btn-primary btn-lg hero-primary-btn"
+                href="/trial?selected_app=mrp"
+              >
                 Start now - It&apos;s free
-                <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"
-                  style={{ marginLeft: "0.375rem" }}>
-                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+              </Link>
+              <button
+                type="button"
+                className="btn btn-light btn-lg hero-secondary-btn"
+                onClick={() => setVideoOpen(true)}
+              >
+                Meet an advisor
               </button>
-              <ul className="dropdown-menu" role="menu">
-                <li><Link href="/trial?selected_app=mrp" className="dropdown-item" role="menuitem">Start for free</Link></li>
-                <li><Link href="/contactus" className="dropdown-item" role="menuitem">Schedule a demo</Link></li>
-              </ul>
             </div>
-            <Link href="/app/manufacturing" className="btn btn-light">See a demo</Link>
+
+            <p className="hero-proof-original">
+              Free, forever, with unlimited users.{" "}
+              <Link href="#why">See why</Link>
+            </p>
+
           </div>
-          <small className="hero_small">No credit card required. Instant access.</small>
         </div>
       </section>
 
-      {/* Hero image + video */}
-      <section className="s_wd_hero_image">
+      {/* ── Hero media (product screenshot + accent shapes) ── */}
+      <section className="s_wd_hero_image s_wd_hero_media--replica">
         <div className="o_we_shape o_illustration_doodle_01" aria-hidden="true" />
-        <div className="container">
+        <div className="container" style={{ position: "relative" }}>
+
+          {/* Starburst accent (top-left) */}
+          <div className="hero-starburst" aria-hidden="true">
+            <span /><span /><span /><span />
+          </div>
+
+          {/* Framed product screenshot */}
           <div className="hero_img_wrap">
             <div className="x_wd_corner_highlight">
               <div className="s_panel_video">
@@ -62,20 +79,18 @@ export default function HeroSection() {
                   />
                   <div className="x_wd_video_play_icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="var(--o-brand)" aria-hidden="true">
-                      <path d="M8 5v14l11-7z"/>
+                      <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
                 </button>
               </div>
             </div>
           </div>
+
+          {/* Persona bubble anchored below screenshot */}
+          <PersonaBubble text="Check out MES in action!" />
         </div>
       </section>
-
-      {/* Persona bubble */}
-      <div className="container" style={{ position: "relative" }}>
-        <PersonaBubble text="Check out MES in action!" />
-      </div>
 
       {videoOpen && <VideoModal onClose={() => setVideoOpen(false)} />}
     </>
