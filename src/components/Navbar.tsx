@@ -45,13 +45,14 @@ export default function Navbar() {
           <Image
             src="/images/QVOO_Logo.png"
             alt="Qvoo"
-            width={120} height={40}
+            width={120}
+            height={40}
             priority
             style={{ objectFit: "contain", height: "40px", width: "auto" }}
           />
         </Link>
 
-        {/* Desktop nav — hidden below 1024 px */}
+        {/* ── Desktop nav (single row, hidden below 1024px) ── */}
         <nav className="o_desktop_nav" aria-label="Main navigation">
           <ul>
             {/* Manufacturing mega-menu trigger */}
@@ -66,21 +67,35 @@ export default function Navbar() {
                 Manufacturing
                 <svg
                   className={`o_chevron${megaOpen ? " o_chevron--open" : ""}`}
-                  width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  aria-hidden="true"
                 >
-                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M2 4l4 4 4-4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               {megaOpen && <MegaMenu onClose={() => setMegaOpen(false)} />}
             </li>
+
+            {/* Separator */}
+            <li aria-hidden="true" className="o_nav_sep" />
 
             {/* Overview · Features · PLM · Maintenance · Quality */}
             {SUB_NAV_LINKS.map(l => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className={`o_nav_item${l.label === "Overview" ? " o_nav_item--active" : ""}`}
+                  className={`o_nav_item${
+                    l.label === "Overview" ? " o_nav_item--active" : ""
+                  }`}
                 >
                   {l.label}
                 </Link>
@@ -89,15 +104,18 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* Desktop actions */}
+        {/* ── Desktop actions ── */}
         <div className="o_header_actions">
           <Link href="/web/login" className="o_signin_link">Sign in</Link>
-          <Link href="/trial?selected_app=mrp" className="btn btn-primary btn-sm trial_link">
+          <Link
+            href="/trial?selected_app=mrp"
+            className="btn btn-primary btn-sm trial_link"
+          >
             Try it free
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
+        {/* ── Mobile hamburger (hidden ≥1024px) ── */}
         <button
           className={`o_hamburger${mobileOpen ? " o_hamburger--open" : ""}`}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -108,7 +126,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* ── Mobile drawer ── */}
       {mobileOpen && (
         <nav className="o_mobile_nav" aria-label="Mobile navigation">
           <ul>
@@ -121,10 +139,19 @@ export default function Navbar() {
                 Manufacturing
                 <svg
                   className={`o_chevron${mobileMegaOpen ? " o_chevron--open" : ""}`}
-                  width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  aria-hidden="true"
                 >
-                  <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M2 4l4 4 4-4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               {mobileMegaOpen && (
@@ -139,7 +166,9 @@ export default function Navbar() {
                 <Link
                   href={l.href}
                   onClick={closeAll}
-                  className={`o_nav_item o_nav_item--full${l.label === "Overview" ? " o_nav_item--active" : ""}`}
+                  className={`o_nav_item o_nav_item--full${
+                    l.label === "Overview" ? " o_nav_item--active" : ""
+                  }`}
                 >
                   {l.label}
                 </Link>
