@@ -2,33 +2,46 @@ import Image from "next/image";
 import { ReactNode } from "react";
 
 interface FeatureRowProps {
+  reverse?: boolean;
   heading: ReactNode;
   body: ReactNode;
   imgSrc: string;
   imgAlt: string;
-  reverse?: boolean;
-  bgLight?: boolean;
+  imgWidth?: number;
+  imgHeight?: number;
+  className?: string;
 }
 
 export default function FeatureRow({
-  heading, body, imgSrc, imgAlt, reverse = false, bgLight = false,
+  reverse = false,
+  heading,
+  body,
+  imgSrc,
+  imgAlt,
+  imgWidth = 680,
+  imgHeight = 420,
+  className = "",
 }: FeatureRowProps) {
   return (
-    <section className={`o_section${bgLight ? " o_section--bg-light" : ""}`}>
+    <section className={`o_section ${className}`}>
       <div className="container">
-        <div className={`row row-feature${reverse ? " row-reverse" : ""}`}>
-          <div className={`col-text o_animate${reverse ? " o_animate--slide-right" : " o_animate--slide-left"}`}>
+        <div className={`row row-feature${reverse ? " row-reverse" : ""}${reverse ? " gap-row-mobile" : ""}`}>
+          {/* Text column */}
+          <div className="col-text o_animate o_animate--slide-left">
             {heading}
-            <div style={{ color: "var(--o-text)", fontSize: "clamp(0.9375rem, 0.875rem + 0.3vw, 1.125rem)" }}>
-              {body}
-            </div>
+            <div style={{ marginTop: "0.875rem" }}>{body}</div>
           </div>
-          <div className={`col-media o_animate${reverse ? " o_animate--slide-left" : " o_animate--slide-right"} o_animate--delay-1`}>
+
+          {/* Media column */}
+          <div className="col-media o_animate o_animate--slide-right o_animate--delay-1">
             <Image
-              src={imgSrc} alt={imgAlt}
-              width={700} height={440}
-              loading="lazy" decoding="async"
+              src={imgSrc}
               className="img-thumbnail"
+              alt={imgAlt}
+              width={imgWidth}
+              height={imgHeight}
+              loading="lazy"
+              decoding="async"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
