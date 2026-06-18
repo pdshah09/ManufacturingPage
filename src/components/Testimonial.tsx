@@ -19,7 +19,7 @@ export default function Testimonial() {
           </blockquote>
           <div className="testimonial-author">
             <Image
-              src="https://odoocdn.com/openerp_website/static/src/img/customers/liz_carr.jpg"
+              src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_testimonials/avatar/jacky_lecuivre.webp"
               alt="Liz Carr"
               width={48}
               height={48}
