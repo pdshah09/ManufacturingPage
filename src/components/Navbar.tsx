@@ -7,8 +7,9 @@ import { SUB_NAV_LINKS } from "@/data/nav";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [megaOpen, setMegaOpen]   = useState(false);
+  const [mobileMegaOpen, setMobileMegaOpen] = useState(false);
+  const [scrolled, setScrolled]   = useState(false);
   const megaRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mega on outside click (desktop)
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (megaRef.current && !megaRef.current.contains(e.target as Node)) {
@@ -27,22 +29,23 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  // Lock body scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  const closeAll = () => { setMobileOpen(false); setMobileMegaOpen(false); };
+
   return (
-    <header
-      id="top"
-      className={`o_main_header${scrolled ? " o_main_header--scrolled" : ""}`}
-    >
+    <header id="top" className={`o_main_header${scrolled ? " o_main_header--scrolled" : ""}`}>
       <div className="o_header_inner">
-        {/* Logo — Qvoo_long */}
-        <Link href="/" aria-label="Qvoo">
+        {/* Logo */}
+        <Link href="/" aria-label="Qvoo" className="o_header_logo" onClick={closeAll}>
           <Image
-            src="/images/QVOO_Logo.png"
-            alt="Qvoo"
-            width={160}
-            height={90}
-            loading="eager"
-            priority
-            style={{ width: "auto", height: "90px", objectFit: "contain" }}
+            src="/images/QVOO_Logo.png" alt="Qvoo"
+            width={160} height={90} loading="eager" priority
+            style={{ objectFit: "contain" }}
           />
         </Link>
 
@@ -54,47 +57,41 @@ export default function Navbar() {
           onClick={() => setMobileOpen((v) => !v)}
         >
           {mobileOpen ? (
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M4 4l14 14M18 4L4 18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/>
             </svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M2 5.5h18M2 11h18M2 16.5h18" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"/>
             </svg>
           )}
         </button>
 
-        {/* Primary nav */}
-        <nav
-          className={`o_primary_nav${mobileOpen ? " o_primary_nav--open" : ""}`}
-          aria-label="Main navigation"
-        >
+        {/* ── Desktop primary nav ── */}
+        <nav className="o_primary_nav" aria-label="Main navigation">
           <ul>
-            <li className="o_nav_has_dropdown" ref={megaRef}>
+            {/* Manufacturing + mega */}
+            <li className="o_nav_has_dropdown" ref={megaRef}
+              onMouseLeave={() => setMegaOpen(false)}>
               <button
                 className="o_nav_mega_btn"
                 aria-expanded={megaOpen}
                 aria-haspopup="true"
-                onClick={() => setMegaOpen((v) => !v)}
                 onMouseEnter={() => setMegaOpen(true)}
+                onClick={() => setMegaOpen((v) => !v)}
               >
                 <span className="o_app_name_title">Manufacturing</span>
-                <svg
-                  className={`o_nav_chevron${megaOpen ? " o_nav_chevron--open" : ""}`}
-                  width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"
-                >
+                <svg className={`o_nav_chevron${megaOpen ? " o_nav_chevron--open" : ""}`}
+                  width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                   <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round" />
+                    strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
-              {megaOpen && <MegaMenu />}
+              {megaOpen && <MegaMenu onClose={() => setMegaOpen(false)} />}
             </li>
             {SUB_NAV_LINKS.map((l) => (
               <li key={l.label}>
-                <Link
-                  href={l.href}
-                  className={l.href === "/app/manufacturing" ? "o_nav_active" : ""}
-                >
+                <Link href={l.href} className={l.label === "Overview" ? "o_nav_active" : ""}>
                   {l.label}
                 </Link>
               </li>
@@ -105,7 +102,7 @@ export default function Navbar() {
         {/* CTA buttons */}
         <ul className="o_header_buttons">
           <li>
-            <Link href="/web/login" className="o_nav_link">Sign in</Link>
+            <Link href="/web/login" className="o_nav_link o_nav_signin">Sign in</Link>
           </li>
           <li>
             <Link href="/trial?selected_app=mrp" className="btn btn-primary btn-sm trial_link">
@@ -114,6 +111,50 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
+
+      {/* ── Mobile drawer ── */}
+      <nav
+        className={`o_primary_nav${mobileOpen ? " o_primary_nav--open" : ""}`}
+        aria-label="Mobile navigation"
+        aria-hidden={!mobileOpen}
+      >
+        <ul>
+          {/* Manufacturing with inline mega accordion */}
+          <li>
+            <button
+              className="o_nav_mega_btn"
+              style={{ width: "100%", justifyContent: "space-between" }}
+              onClick={() => setMobileMegaOpen((v) => !v)}
+              aria-expanded={mobileMegaOpen}
+            >
+              <span className="o_app_name_title">Manufacturing</span>
+              <svg className={`o_nav_chevron${mobileMegaOpen ? " o_nav_chevron--open" : ""}`}
+                width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
+                  strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {mobileMegaOpen && (
+              <div className="o_mobile_mega">
+                <MegaMenu mobile onClose={closeAll} />
+              </div>
+            )}
+          </li>
+          {SUB_NAV_LINKS.map((l) => (
+            <li key={l.label}>
+              <Link href={l.href} onClick={closeAll}
+                className={l.label === "Overview" ? "o_nav_active" : ""}>
+                {l.label}
+              </Link>
+            </li>
+          ))}
+          {/* Sign in shown in mobile drawer */}
+          <li>
+            <Link href="/web/login" onClick={closeAll} className="o_nav_mega_btn"
+              style={{ width: "100%" }}>Sign in</Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
