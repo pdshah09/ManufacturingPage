@@ -27,7 +27,7 @@ export default function VideoModal({ onClose }: { onClose: () => void }) {
           </svg>
         </button>
         <iframe
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+          src="https://www.youtube.com/embed/uWg9-UUr4Dw?autoplay=1"
           allow="autoplay; encrypted-media"
           allowFullScreen
           title="Qvoo Manufacturing showreel"

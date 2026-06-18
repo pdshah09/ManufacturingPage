@@ -25,15 +25,22 @@ export default function FeatureRow({
   return (
     <section className={`o_section ${className}`}>
       <div className="container">
-        <div className={`row row-feature${reverse ? " row-reverse" : ""}${reverse ? " gap-row-mobile" : ""}`}>
-          {/* Text column */}
+        <div className={`row row-feature${reverse ? " row-reverse" : ""}`}>
           <div className="col-text o_animate o_animate--slide-left">
             {heading}
             <div style={{ marginTop: "0.875rem" }}>{body}</div>
           </div>
 
-          {/* Media column */}
-          <div className="col-media o_animate o_animate--slide-right o_animate--delay-1">
+          <div className="col-media o_animate o_animate--slide-right o_animate--delay-1" style={{ position: "relative" }}>
+            <Image
+              src="https://odoocdn.com/openerp_website/static/src/img/arrows/grey_arrow_dot_02.svg"
+              height={28}
+              width={120}
+              className="feature-arrow"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
             <Image
               src={imgSrc}
               className="img-thumbnail"

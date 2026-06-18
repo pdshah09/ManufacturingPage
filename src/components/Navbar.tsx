@@ -41,14 +41,19 @@ export default function Navbar() {
       <div className="o_header_inner">
 
         {/* Logo */}
-        <Link href="/" aria-label="Qvoo home" className="o_header_logo" onClick={closeAll}>
+        <Link
+          href="/"
+          aria-label="Qvoo home"
+          className="o_header_logo"
+          onClick={closeAll}
+        >
           <Image
             src="/images/QVOO_Logo.png"
             alt="Qvoo"
-            width={120}
-            height={40}
+            width={140}
+            height={80}
             priority
-            style={{ objectFit: "contain", height: "40px", width: "auto" }}
+            className="o_logo_img"
           />
         </Link>
 
@@ -93,9 +98,8 @@ export default function Navbar() {
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className={`o_nav_item${
-                    l.label === "Overview" ? " o_nav_item--active" : ""
-                  }`}
+                  className={`o_nav_item${l.label === "Overview" ? " o_nav_item--active" : ""
+                    }`}
                 >
                   {l.label}
                 </Link>
@@ -166,9 +170,8 @@ export default function Navbar() {
                 <Link
                   href={l.href}
                   onClick={closeAll}
-                  className={`o_nav_item o_nav_item--full${
-                    l.label === "Overview" ? " o_nav_item--active" : ""
-                  }`}
+                  className={`o_nav_item o_nav_item--full${l.label === "Overview" ? " o_nav_item--active" : ""
+                    }`}
                 >
                   {l.label}
                 </Link>

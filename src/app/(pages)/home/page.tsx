@@ -47,17 +47,10 @@ export default function HomePage() {
 
         {/* 2. Real-time Simulated Operations */}
         <FeatureRow
-          reverse
           heading={
-            <>
-              <Image
-                src="https://odoocdn.com/openerp_website/static/src/img/arrows/grey_arrow_dot_02.svg"
-                height={120} width={80} className="feature-arrow" alt="" aria-hidden="true" loading="lazy"
-              />
-              <h2 className="display-2">
-                <span className="x_wd_green_highlight_03">Real-time</span> simulated operations
-              </h2>
-            </>
+            <h2 className="display-2">
+              <span className="x_wd_green_highlight_03">Real-time</span> simulated operations
+            </h2>
           }
           body={
             <>
@@ -126,7 +119,7 @@ export default function HomePage() {
         {/* 5. Paperless Shop Floor */}
         <section className="o_section o_section--bg-light">
           <div className="container">
-            <div className="row row-feature row-reverse">
+            <div className="row row-feature">
               <div className="col-media col-media--overlap o_animate o_animate--slide-left" style={{ position: "relative" }}>
                 <Image
                   src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/become_paperless_03.webp"
