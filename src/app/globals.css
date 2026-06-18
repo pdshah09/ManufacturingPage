@@ -225,7 +225,7 @@ main {
 
 @media (max-width:1023px) {
   .o_logo_img {
-    height: 32px;
+    height: 80px;
   }
 }
 
@@ -724,7 +724,7 @@ main {
 
 .hero-starburst {
   position: absolute;
-  left: 12%;
+  left: 12vw;
   top: 0.5rem;
   width: 96px;
   height: 96px;
@@ -758,7 +758,7 @@ main {
 .o_we_shape.o_illustration_doodle_01 {
   position: absolute;
   inset: 0;
-  background-image: url('https://www.odoo.com/html_editor/shape/illustration/doodle/01.svg?c4=%23ffffff');
+  background-image: url('https://odoocdn.com/html_editor/shape/illustration/doodle/01.svg?c4=%23ffffff');
   background-size: 100%;
   background-position: 50% 0%;
   background-repeat: no-repeat;
@@ -881,7 +881,7 @@ main {
 
 /* Highlights */
 .x_wd_green_highlight_03 {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/green_highlight_03.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/green_highlight_03.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -889,7 +889,7 @@ main {
 }
 
 .x_wd_blue_highlight_02 {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/blue_highlight_02.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/blue_highlight_02.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -897,7 +897,7 @@ main {
 }
 
 .x_wd_red_highlight_scribble_01 {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/red_highlight_scribble_01.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/red_highlight_scribble_01.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -905,7 +905,7 @@ main {
 }
 
 .x_wd_green_highlight_scribble_03 {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/green_highlight_scribble_03.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/green_highlight_scribble_03.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -913,7 +913,7 @@ main {
 }
 
 .x_wd_blue_highlight_scribble_05 {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/blue_highlight_scribble_05.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/blue_highlight_scribble_05.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -921,7 +921,7 @@ main {
 }
 
 .x_wd_display_circle {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/display_circle.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/graphics/circle.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -929,7 +929,7 @@ main {
 }
 
 .x_wd_display_underline {
-  background-image: url('https://www.odoo.com/openerp_website/static/src/img/highlights/display_underline.svg');
+  background-image: url('https://odoocdn.com/openerp_website/static/src/img/graphics/underline.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-position: 50% 100%;
@@ -1332,34 +1332,87 @@ main {
    USERS SECTION
 ═══════════════════════════════════════ */
 .s_wd_users {
-  padding-block: clamp(3rem, 5vw, 5rem);
-  background: var(--o-bg-light);
-  text-align: center;
   position: relative;
-  overflow: hidden;
+  height: auto;
 }
 
+/* Central Overlay Content Box */
 .s_wd_users_center {
   position: relative;
-  z-index: 1;
+  z-index: 10;
+  background-color: #ffffff;
+  text-align: center;
+  color: var(--o-text-dark); /* Using design token for dark text */
+  padding: 2.5rem 2rem;
+  border-radius: var(--o-radius);
+  box-shadow: var(--o-shadow); /* Clean overlay depth drop shadow */
+  max-width: 92%;
+  margin-inline: auto;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+@media (min-width: 768px) {
+  .s_wd_users_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50rem; /* Responsive capsule pill shape */
+    padding: 4rem 6rem;
+    width: max-content;
+    max-width: 85%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .s_wd_users_center {
+    padding: 4rem 8rem;
+  }
+}
+
+/* Header typography overrides matching display-2 rules */
 .s_wd_users_center .display-2 {
-  margin-bottom: 0.75rem;
+  position: relative;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
 }
 
+/* Floating Sup Text Highlight ("happy" label + scribble arrow) */
 .x_wd_display_sup {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 0.25rem;
-  color: var(--o-brand);
+  display: none; /* Flow hidden on mobile devices */
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: rgb(251, 177, 48); /* Accent gold color */
+  position: absolute;
+  top: -2.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
+@media (min-width: 768px) {
+  .x_wd_display_sup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.x_wd_display_sup img {
+  display: inline-block;
+  margin-top: 1.25rem;
+  margin-left: -0.5rem;
+}
+
+/* Subtitle under the primary header */
 .users-sub {
   display: block;
-  font-size: 1.1rem;
-  color: var(--o-text);
-  margin-bottom: 2rem;
+  font-size: clamp(1.15rem, 1.2rem + 0.2vw, 1.45rem);
+  color: var(--o-text); /* Fallback generic system body text color token */
+  font-weight: 500;
+  margin-top: 0.5rem;
 }
 
 /* ═══════════════════════════════════════
@@ -1663,11 +1716,8 @@ main {
     text-align: left;
   }
 
+  .hero-starburst,
   .persona-smile {
-    display: none;
-  }
-
-  .hero-starburst {
     display: none;
   }
 }

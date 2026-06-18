@@ -14,6 +14,15 @@ export default function Testimonial() {
           loading="lazy"
         />
         <div className="testimonial-card o_animate">
+          <Image
+          src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_testimonials/quote.svg"
+          height={70}
+          width={60}
+          className="position-absolute top-0 translate-middle d-none d-md-inline"
+          alt="quote"
+          aria-hidden="true"
+          loading="lazy"
+        />
           <blockquote className="testimonial-quote">
             &ldquo;Odoo allowed our company to efficiently manage a growth from a turnover of $2.4m to $35m in 4 years.&rdquo;
           </blockquote>

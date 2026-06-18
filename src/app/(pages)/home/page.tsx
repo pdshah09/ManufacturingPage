@@ -8,6 +8,7 @@ import PersonaBubble from "@/components/PersonaBubble";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import RelatedApps from "@/components/RelatedApps";
 import Testimonial from "@/components/Testimonial";
+import UsersMosaicSection from "@/components/UserMosaicSection";
 
 function useScrollAnimate() {
   useEffect(() => {
@@ -198,7 +199,7 @@ export default function HomePage() {
         <RelatedApps />
 
         {/* 10. Join 15M users */}
-        <section className="s_wd_users">
+        {/* <section className="s_wd_users">
           <div className="container">
             <div className="s_wd_users_center o_animate">
               <h2 className="display-2">
@@ -214,7 +215,8 @@ export default function HomePage() {
               <span className="users-sub">who grow their business with Qvoo</span>
             </div>
           </div>
-        </section>
+        </section> */}
+        <UsersMosaicSection/>
 
         {/* 11. Testimonial */}
         <Testimonial />
@@ -222,7 +224,27 @@ export default function HomePage() {
         {/* 12. Industry 4.0 CTA */}
         <section className="s_wd_call_to_action">
           <div className="container">
+            
             <h3 className="display-1 o_animate">
+              <Image
+                      src="/indusl.svg"
+                      height={70}
+                      width={60}
+                      className="position-absolute top-0 translate-middle d-none d-md-inline"
+                      alt="quote"
+                      aria-hidden="true"
+                      loading="lazy"
+            />
+            <Image
+                      src="/indusr.svg"
+                      height={70}
+                      width={60}
+                      className="position-absolute left-0 translate-middle d-none d-md-inline"
+                      alt="quote"
+                      aria-hidden="true"
+                      loading="lazy"
+            />
+            
               <span className="x_wd_display_fireworks_01">On the way</span><br /> to Industry 4.0
             </h3>
             <div className="o_animate o_animate--delay-1">
