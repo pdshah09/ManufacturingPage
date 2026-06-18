@@ -31,11 +31,7 @@ export default function HeroSection() {
                 </Link>
                 <div className="o_schedule_demo">
                   <div className="dropdown">
-                    <button
-                      className="btn btn-light dropdown-toggle"
-                      type="button"
-                      aria-expanded="false"
-                    >
+                    <button className="btn btn-light dropdown-toggle" type="button" aria-expanded="false">
                       Meet an advisor
                     </button>
                     <ul className="dropdown-menu" role="menu">
@@ -53,9 +49,7 @@ export default function HeroSection() {
                   </div>
                 </div>
               </div>
-              <small className="hero_small">
-                Free, forever, with unlimited users.
-              </small>
+              <small className="hero_small">Free, forever, with unlimited users.</small>
             </div>
           </div>
         </div>

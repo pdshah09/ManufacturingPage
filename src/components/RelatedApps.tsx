@@ -1,44 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
-import { RELATED_APPS } from "@/data/apps";
+
+const APPS = [
+  { name: "Inventory", href: "/app/inventory", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/inventory.svg" },
+  { name: "Purchase", href: "/app/purchase", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/purchase.svg" },
+  { name: "PLM", href: "/app/plm", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/plm.svg" },
+  { name: "Maintenance", href: "/app/maintenance", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/maintenance.svg" },
+  { name: "Quality", href: "/app/quality", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/quality.svg" },
+  { name: "Project", href: "/app/project", icon: "https://odoocdn.com/openerp_website/static/src/img/apps/icons/project.svg" },
+];
 
 export default function RelatedApps() {
   return (
     <section className="s_wd_related_apps">
       <div className="container">
-        <h3 className="display-2">
-          One <span className="x_wd_display_underline">need</span>, one{" "}
-          <span className="x_wd_display_underline">app</span>.
-        </h3>
-        <p className="lead">Expand as you grow.</p>
+        <p className="o_animate" style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, color: "var(--o-text)", opacity: 0.6, marginBottom: "0.25rem" }}>
+          Expand as you grow
+        </p>
+        <h2 className="display-2 o_animate o_animate--delay-1" style={{ marginBottom: "0.5rem" }}>
+          One need, one app.
+        </h2>
         <div className="related-apps-grid">
-          {RELATED_APPS.map((app) => (
-            <div key={app.label} className="x_wd_app_horizontal">
-              <Link href={app.href} className="app-icon-link">
-                <Image
-                  width={68}
-                  height={68}
-                  src={app.icon}
-                  alt={`Odoo ${app.label} icon`}
-                  loading="lazy"
-                />
-              </Link>
-              <div className="app-info">
-                <h5>{app.label}</h5>
-                <small>{app.desc}</small>
-              </div>
-            </div>
+          {APPS.map((app, i) => (
+            <Link
+              key={app.name}
+              href={app.href}
+              className={`related-app-card o_animate o_animate--delay-${(i % 4) + 1}`}
+            >
+              <Image src={app.icon} alt={app.name} width={40} height={40} loading="lazy" />
+              <span>{app.name}</span>
+            </Link>
           ))}
         </div>
-        <Link href="/page/all-apps" className="features-all-link">
+        <Link href="/apps" className="related-apps-link o_animate o_animate--delay-2">
           See all Apps
           <Image
             src="https://odoocdn.com/openerp_website/static/src/img/arrows/secondary_arrow_sm_03.svg"
-            width={40}
-            height={20}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
+            width={40} height={20} alt="" aria-hidden="true" loading="lazy"
           />
         </Link>
       </div>

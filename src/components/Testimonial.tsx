@@ -13,45 +13,22 @@ export default function Testimonial() {
           aria-hidden="true"
           loading="lazy"
         />
-        <div className="testimonial-card">
-          <Image
-            src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_testimonials/quote.svg"
-            height={70}
-            width={70}
-            className="testimonial-quote-icon"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-          />
-          <div className="testimonial-body">
-            <blockquote>
-              <p className="testimonial-quote">
-                Odoo allowed our company to efficiently manage a growth from a
-                turnover of $2.4m to $15m in 4 years.
-              </p>
-            </blockquote>
-          </div>
+        <div className="testimonial-card o_animate">
+          <blockquote className="testimonial-quote">
+            &ldquo;Odoo allowed our company to efficiently manage a growth from a turnover of $2.4m to $35m in 4 years.&rdquo;
+          </blockquote>
           <div className="testimonial-author">
             <Image
-              height={90}
-              width={90}
-              className="testimonial-avatar"
-              src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_testimonials/avatar/jacky_lecuivre.webp"
-              alt="Jacky Lecuivre"
+              src="https://odoocdn.com/openerp_website/static/src/img/customers/liz_carr.jpg"
+              alt="Liz Carr"
+              width={48}
+              height={48}
               loading="lazy"
             />
-            <div className="testimonial-author-info">
-              <b>Jacky Lecuivre</b>
-              <small>CEO at Coppercnic</small>
+            <div>
+              <div className="testimonial-name">Liz Carr</div>
+              <div className="testimonial-title">COO, Mangrove</div>
             </div>
-            <Image
-              width={100}
-              height={50}
-              className="img-thumbnail testimonial-logo"
-              src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_testimonials/logo/coppercnic.webp"
-              alt="Coppercnic logo"
-              loading="lazy"
-            />
           </div>
         </div>
       </div>

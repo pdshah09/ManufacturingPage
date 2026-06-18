@@ -11,21 +11,26 @@ import Testimonial from "@/components/Testimonial";
 
 function useScrollAnimate() {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".o_animate:not(.o_animated)");
-    if (!els.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            (e.target as HTMLElement).classList.add("o_animated");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -48px 0px" }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const run = () => {
+      const els = document.querySelectorAll<HTMLElement>(".o_animate:not(.o_animated)");
+      if (!els.length) return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              (e.target as HTMLElement).classList.add("o_animated");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -48px 0px" }
+      );
+      els.forEach((el) => io.observe(el));
+      return () => io.disconnect();
+    };
+    // slight delay so dynamic components mount first
+    const t = setTimeout(run, 50);
+    return () => clearTimeout(t);
   }, []);
 }
 
@@ -37,10 +42,10 @@ export default function HomePage() {
       <Link className="o_skip_to_content" href="#wrap">Skip to Content</Link>
 
       <main id="wrap">
-        {/* 1–3: Hero + video trigger + persona */}
+        {/* 1. Hero */}
         <HeroSection />
 
-        {/* 4. Real-time Simulated Operations */}
+        {/* 2. Real-time Simulated Operations */}
         <FeatureRow
           reverse
           heading={
@@ -64,8 +69,8 @@ export default function HomePage() {
           imgAlt="Real-time simulated operations"
         />
 
-        {/* 5. Planning / Gantt */}
-        <section className="o_section text-center-lg">
+        {/* 3. Planning / Gantt */}
+        <section className="o_section text-center-lg o_section--bg-light">
           <div className="container">
             <Image
               src="https://odoocdn.com/openerp_website/static/src/img/icons/calendar.svg"
@@ -76,8 +81,9 @@ export default function HomePage() {
             <h2 className="display-2 o_animate o_animate--delay-1">
               Planning that puts you ahead of schedule
             </h2>
-            <p className="o_animate o_animate--delay-2">
-              <strong>Schedule manufacturing orders</strong> and plan resources with finite capacity planning.<br />Fine tune easily with the Gantt chart.
+            <p className="o_animate o_animate--delay-2" style={{ maxWidth: "52ch", margin: "0 auto 1rem" }}>
+              <strong>Schedule manufacturing orders</strong> and plan resources with finite capacity planning.
+              Fine tune easily with the Gantt chart.
             </p>
             <div className="img-wide-wrap o_animate o_animate--delay-2">
               <Image
@@ -89,8 +95,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 6. Record production / Barcode */}
-        <section className="o_section overflow-x-hidden">
+        {/* 4. Record production / Barcode */}
+        <section className="o_section" style={{ overflow: "hidden" }}>
           <div className="container">
             <div className="row row-feature">
               <div className="col-text o_animate o_animate--slide-left">
@@ -100,11 +106,12 @@ export default function HomePage() {
                 <p>Use to process orders, accelerate operations, and reduce input errors. Works right out of the box, blazing fast, and with no latency.</p>
                 <PersonaBubble text="Works offline: No WiFi coverage issues!" inline />
               </div>
-              <div className="col-media text-center o_animate o_animate--slide-right o_animate--delay-1">
-                <h5 className="display-5 text-o-color-8">Mobile barcode app</h5>
+              <div className="col-media text-center-lg o_animate o_animate--slide-right o_animate--delay-1">
+                <h5 className="display-5">Mobile barcode app</h5>
                 <Image
                   src="https://odoocdn.com/openerp_website/static/src/img/graphics/arrow_doodle_13.svg"
                   className="rotate-320" width={60} height={60} alt="" aria-hidden="true" loading="lazy"
+                  style={{ marginInline: "auto", marginBottom: "0.5rem" }}
                 />
                 <Image
                   src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/barcode.webp"
@@ -116,11 +123,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 7. Paperless Shop Floor */}
-        <section className="o_section">
+        {/* 5. Paperless Shop Floor */}
+        <section className="o_section o_section--bg-light">
           <div className="container">
             <div className="row row-feature row-reverse">
-              <div className="col-media col-media--overlap o_animate o_animate--slide-left">
+              <div className="col-media col-media--overlap o_animate o_animate--slide-left" style={{ position: "relative" }}>
                 <Image
                   src="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/become_paperless_03.webp"
                   className="img-thumbnail paperless-float paperless-float--tl"
@@ -147,7 +154,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 8. Six-Sigma */}
+        {/* 6. Six-Sigma */}
         <section className="o_section">
           <div className="container">
             <Image
@@ -175,8 +182,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 9. Kaizen */}
-        <section className="o_section">
+        {/* 7. Kaizen */}
+        <section className="o_section o_section--bg-light">
           <div className="container">
             <h2 className="display-2 text-center-lg o_animate">
               The perfect tool for <span className="x_wd_blue_highlight_scribble_05">Kaizen</span>
@@ -191,13 +198,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 10. Features Grid */}
+        {/* 8. Features Grid */}
         <FeaturesGrid />
 
-        {/* 11. Related Apps */}
+        {/* 9. Related Apps */}
         <RelatedApps />
 
-        {/* 12. Join 15M users */}
+        {/* 10. Join 15M users */}
         <section className="s_wd_users">
           <div className="container">
             <div className="s_wd_users_center o_animate">
@@ -216,10 +223,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 13. Testimonial */}
+        {/* 11. Testimonial */}
         <Testimonial />
 
-        {/* 14. Industry 4.0 CTA */}
+        {/* 12. Industry 4.0 CTA */}
         <section className="s_wd_call_to_action">
           <div className="container">
             <h3 className="display-1 o_animate">
