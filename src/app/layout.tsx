@@ -1,20 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Real Estate CRM | Qvoo – Manage Leads & Close Deals Faster",
-  description:
-    "Real Estate CRM Qvoo is designed for agents, brokers, and developers to simplify lead management, property listings, and client communication.",
+  title: "Qvoo Manufacturing – The future of MRP",
+  description: "MRP + MES + PLM + Quality + Shop Floor + Maintenance. All you need on one single platform.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div id="wrapwrap">
+          <Navbar />
+          {children}
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }

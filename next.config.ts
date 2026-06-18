@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["127.0.0.1"],
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "odoocdn.com", pathname: "/**" },
-      { protocol: "https", hostname: "www.odoo.com", pathname: "/**" },
+      { protocol: "https", hostname: "odoocdn.com" },
+      { protocol: "https", hostname: "www.odoo.com" },
+      { protocol: "https", hostname: "download.odoocdn.com" },
+      { protocol: "https", hostname: "qvoo.io" },
     ],
   },
 };
