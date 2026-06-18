@@ -1,7 +1,7 @@
-# ManufacturingPage — Static Core Structure (FROZEN)
-
-> **Do not restructure, rename, or reorganise files below without explicit instruction.**
-> This document is the canonical reference for the project's architecture.
+# STRUCTURE.md — Static Core Reference
+> **Last verified:** 2026-06-18 · **Branch:** `main`
+> This file is the single source of truth for the project's core architecture.
+> Do NOT rename files, move components, or change the stack without updating this document.
 
 ---
 
@@ -11,9 +11,11 @@
 |---|---|
 | Framework | Next.js 15 (App Router) |
 | Language | TypeScript |
-| Styling | Tailwind CSS v4 + `src/app/globals.css` (primary) |
-| Fonts | Google Fonts — Inter (body) · Caveat (display/headings) |
-| Logo | `public/Qvoo_long.png` (navbar + footer, `h:32–36px w:auto`, inverted in footer) |
+| Styling | Tailwind CSS v4 + `src/app/globals.css` |
+| Fonts | Inter (body) · Caveat (accent/handwritten) |
+| State | React hooks only — no external state library |
+| Animations | Custom `useAnimateOnScroll` hook → IntersectionObserver |
+| Package manager | npm (`package-lock.json` present) |
 
 ---
 
@@ -21,138 +23,121 @@
 
 ```
 ManufacturingPage/
-├── public/
-│   ├── Qvoo_long.png              ← brand logo (navbar + footer)
-│   └── images/                    ← all static image assets
-│
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx             ← root layout (html + body wrapper)
-│   │   ├── page.tsx               ← root redirect → /(pages)/home
-│   │   ├── globals.css            ← ALL styles live here (design tokens, components, animations)
-│   │   ├── not-found.tsx          ← 404 page
-│   │   └── (pages)/
-│   │       └── home/
-│   │           └── page.tsx       ← main page — assembles all sections
-│   │
-│   ├── components/
-│   │   ├── Navbar.tsx             ← fixed top nav, mega-menu trigger, Qvoo_long logo
-│   │   ├── MegaMenu.tsx           ← full-width dropdown (Finance/Sales/HR/Marketing…)
-│   │   ├── HeroSection.tsx        ← hero banner + video play button + persona bubble
-│   │   ├── FeatureRow.tsx         ← alternating text+image rows (slide-left/slide-right anim)
-│   │   ├── FeaturesGrid.tsx       ← 2-col card grid with staggered fade-in
-│   │   ├── RelatedApps.tsx        ← 5-col app icon grid
-│   │   ├── Testimonial.tsx        ← quote card + author + logo
-│   │   ├── PersonaBubble.tsx      ← floating bubble overlaid on hero image
-│   │   ├── VideoModal.tsx         ← full-screen iframe modal (YouTube embed)
-│   │   └── Footer.tsx             ← dark footer, Qvoo_long logo, 4-col links grid
-│   │
-│   ├── data/
-│   │   └── (static JSON / TS data files for page content)
-│   │
-│   └── hooks/
-│       └── useAnimateOnScroll.ts  ← IntersectionObserver hook → adds .o_animated class
-│
+├── STRUCTURE.md              ← THIS FILE — do not delete
+├── AGENTS.md                 ← AI agent rules
+├── CLAUDE.md                 ← Claude-specific instructions
+├── README.md
+├── .gitignore
 ├── next.config.ts
 ├── tsconfig.json
-├── postcss.config.mjs
 ├── eslint.config.mjs
-└── package.json
+├── postcss.config.mjs
+├── package.json
+├── package-lock.json
+│
+├── public/                   ← Static assets (images, logos, favicon)
+│
+└── src/
+    ├── app/
+    │   ├── layout.tsx        ← Root layout — fonts, metadata, <body>
+    │   ├── globals.css       ← ALL styles (Tailwind + custom CSS)
+    │   └── home/
+    │       └── page.tsx      ← Home page — assembles all sections in order
+    │
+    ├── components/           ← One file per UI component
+    │   ├── Navbar.tsx        ← Sticky top nav, 72px height, logo + links + CTA
+    │   ├── MegaMenu.tsx      ← Dropdown mega menu triggered from Navbar
+    │   ├── HeroSection.tsx   ← Full-width hero with headline, subtext, CTAs
+    │   ├── FeaturesGrid.tsx  ← Grid of feature cards
+    │   ├── FeatureRow.tsx    ← Alternating image+text row (reusable)
+    │   ├── PersonaBubble.tsx ← Floating persona/avatar UI element
+    │   ├── Testimonial.tsx   ← Single testimonial card
+    │   ├── RelatedApps.tsx   ← Horizontal scroll of related app tiles
+    │   ├── VideoModal.tsx    ← Lightbox video modal
+    │   └── Footer.tsx        ← Site footer with links + legal
+    │
+    ├── data/                 ← Static data files (JSON / TS constants)
+    │
+    └── hooks/
+        └── useAnimateOnScroll.ts  ← IntersectionObserver scroll animation hook
 ```
 
 ---
 
-## CSS Architecture (`src/app/globals.css`)
+## Page Assembly Order (`src/app/home/page.tsx`)
 
-All styles are co-located in a single CSS file. Sections are clearly delimited:
+Components render in this exact sequence — do not reorder:
 
-```
-@import Google Fonts (Inter + Caveat)
-@import tailwindcss
-
-:root design tokens          — --o-brand, --o-navbar-h, --o-container-max, --o-radius,
-                               --o-shadow, --o-shadow-sm, --o-shadow-hero, --o-shadow-lift,
-                               --o-transition, --o-text, --o-text-dark, --o-bg-light, --o-border
-
-Reset + base                 — box-sizing, body font, color, background
-Layout                       — #wrapwrap, .container (max 1320px, fluid padding)
-Skip link                    — .o_skip_to_content
-Scroll animations            — .o_animate, .o_animate--slide-left, .o_animate--slide-right,
-                               .o_animated (toggled by IntersectionObserver), delay modifiers
-Navbar                       — .o_main_header, .o_primary_nav, .o_nav_mega_btn,
-                               nav underline ::after, mobile toggle
-Mega menu                    — .o_secondary_nav, megaSlideIn @keyframes
-Buttons                      — .btn, .btn-primary, .btn-light, .btn-sm, .btn-lg, shimmer CTA
-Hero                         — .s_wd_hero_banner, .s_wd_hero_image, doodle bg,
-                               .btn_video_play, .x_wd_video_play_icon, .s_wd_persona
-Text highlights              — .x_wd_green_highlight_03, .x_wd_blue_highlight_02,
-                               .x_wd_red_highlight_scribble_01, .x_wd_display_circle,
-                               .x_wd_display_underline, .x_wd_display_sup
-Typography                   — .display-1 (Caveat hero), .display-2 (Caveat section),
-                               .display-5 (label caps), .lead
-Sections                     — .o_section (5.5rem padding-block), .row, .row-feature,
-                               .col-text, .col-media, .paperless-float overlapping images
-Features grid                — .s_wd_features_item (hover lift -4px), .features-grid (2-col)
-Related apps                 — .x_wd_app_horizontal (hover lift -2px)
-Users section                — .s_wd_users (bg image + brand overlay)
-Testimonial                  — .testimonial-card (max-w 860px, hover shadow)
-CTA                          — .s_wd_call_to_action (dark bg, shimmer btn)
-Video modal                  — .video-modal-overlay, modalScale @keyframes
-Footer                       — .o_footer (dark), .o_footer_grid (4-col), .o_footer_bottom
-```
+1. `<Navbar />`
+2. `<HeroSection />`
+3. `<FeaturesGrid />`
+4. `<FeatureRow />` (repeatable — alternates image side)
+5. `<PersonaBubble />`
+6. `<Testimonial />`
+7. `<RelatedApps />`
+8. `<VideoModal />`
+9. `<Footer />`
 
 ---
 
 ## Scroll Animation System
 
-All scroll reveals are driven by `src/hooks/useAnimateOnScroll.ts`:
+```
+useAnimateOnScroll.ts
+  └── attaches IntersectionObserver to elements with class .o_animate
+        └── adds class .o_animated when element enters viewport
+              └── CSS in globals.css drives the actual transition
+```
 
-- Selects all `.o_animate`, `.o_animate--slide-left`, `.o_animate--slide-right` elements
-- Uses `IntersectionObserver` with `threshold: 0.12`, fires once per element
-- Adds `.o_animated` class → CSS transitions handle opacity + clip-path
-- Delay variants: `--delay-1` through `--delay-4` (0.08s steps)
-- Respects `prefers-reduced-motion` via CSS `@media` override
+- Add `o_animate` to any element you want to animate on scroll.
+- CSS defines the before/after states; the hook only toggles the class.
+- Respect `prefers-reduced-motion` — the hook already checks this.
+
+---
+
+## CSS Architecture (`src/app/globals.css`)
+
+All styles live here. Sections are named with block comments:
+
+| Section | Class namespace | Purpose |
+|---|---|---|
+| Tailwind directives | — | `@tailwind base/components/utilities` |
+| Design tokens | `:root` variables | Colors, spacing, radius, font refs |
+| Base resets | `html, body, *` | Box-sizing, smoothing, scroll |
+| Scroll animations | `.o_animate` / `.o_animated` | IntersectionObserver state |
+| Navbar | `.s_wd_navbar`, `.x_wd_navbar` | Nav layout + sticky behaviour |
+| Hero | `.s_wd_hero`, `.x_wd_hero` | Hero section layout |
+| Feature grid | `.s_wd_features` | Grid cards |
+| Feature row | `.s_wd_feature_row` | Alternating rows |
+| Buttons | `.btn`, `.btn-primary`, `.btn-ghost` | CTA button variants |
+| Typography | `.display-*` | Heading display sizes |
+| Footer | `.s_wd_footer` | Footer layout |
+| Utilities | `.container`, `.sr-only` | Shared helpers |
 
 ---
 
 ## Naming Conventions
 
-| Prefix | Scope |
-|---|---|
-| `o_` | Odoo-origin layout / nav / footer classes |
-| `s_wd_` | Odoo "website design" section classes |
-| `x_wd_` | Odoo custom widget/decoration classes |
-| `btn` | Button variants |
-| `display-` | Caveat display typography |
-| `o_animate` | Scroll animation entry classes |
+| Prefix | Meaning | Example |
+|---|---|---|
+| `s_wd_` | Section wrapper | `s_wd_navbar` |
+| `x_wd_` | Element inside section | `x_wd_navbar_logo` |
+| `btn` | Button | `btn btn-primary` |
+| `display-` | Display heading size | `display-xl` |
+| `o_animate` | Animate-on-scroll trigger | `o_animate` |
+| `o_animated` | State after animation fires | `o_animated` |
 
 ---
 
-## Page Assembly Order (`home/page.tsx`)
+## Hard Rules (Never Break Without Explicit Instruction)
 
-```
-1. <Navbar />              — fixed, z-index 1030
-2. <HeroSection />         — headline + CTA + video thumbnail
-3. <FeatureRow />          × N  — alternating image/text sections
-4. <FeaturesGrid />        — "All the features done right" 2-col cards
-5. <RelatedApps />         — "One need, one app" 5-col grid
-6. Users section           — 15M users full-bleed bg
-7. <Testimonial />         — quote card
-8. CTA section             — "On the way to Industry 4.0"
-9. <Footer />              — dark 4-col links
-```
-
----
-
-## Rules for Future Edits
-
-1. **All CSS lives in `globals.css`** — no inline styles, no CSS modules, no styled-components.
-2. **Logo is always `Qvoo_long.png`** — never revert to any other logo file.
-3. **Fonts are Inter + Caveat** — loaded via Google Fonts `@import` at top of `globals.css`.
-4. **Design tokens are prefixed `--o-`** — add new tokens here, never hardcode hex values.
-5. **Scroll animations via `.o_animate` classes** — do not use JS-inline style transitions.
-6. **Component files are flat under `src/components/`** — no subdirectory nesting.
-7. **Page content order** (section assembly) matches the Odoo reference page layout above.
-8. **Container max-width is `1320px`** (`--o-container-max`) — do not widen.
-9. **Navbar height is `72px`** (`--o-navbar-h`) — all hero padding-top is offset by this value.
-10. **No external UI libraries** (no Ionic, no MUI, no Chakra) — Tailwind utilities + globals.css only.
+1. **All CSS in `globals.css`** — no inline styles, no CSS modules, no styled-components
+2. **Logo file is `Qvoo_long.png`** — always used; never replaced or renamed
+3. **No external UI component libraries** — no shadcn, no MUI, no Radix (raw HTML + Tailwind only)
+4. **Container max-width: 1320px** — enforced via `.container` utility class
+5. **Navbar height: 72px** — do not change
+6. **Fonts loaded in `layout.tsx` only** — Inter + Caveat via `next/font`
+7. **No `localStorage` / `sessionStorage`** — use React state only
+8. **`data/` folder for all hardcoded content** — no content strings inline in components
+9. **`hooks/` folder for all custom hooks** — one hook per file
+10. **Component files are flat in `src/components/`** — no subdirectories unless a new domain is added and this document is updated
