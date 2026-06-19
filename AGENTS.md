@@ -16,7 +16,7 @@ That file is the canonical frozen architecture reference. Do not restructure, re
 
 ## What is NOT allowed without explicit instruction
 - Renaming any file in `src/components/`
-- Changing the logo from `Qvoo_long.png`
+- Changing the logo from `logo.webp`
 - Changing fonts (Inter + Caveat)
 - Adding new npm packages / UI libraries
 - Moving files between directories

@@ -174,12 +174,17 @@ main {
   background: #fff;
   z-index: 1030;
   border-bottom: 1px solid transparent;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s, opacity 0.35s ease, visibility 0.5s ease;
 }
 
 .o_main_header--scrolled {
   box-shadow: var(--o-shadow-sm);
   border-bottom-color: var(--o-border);
+}
+
+.o_main_header--hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* Inner: logo | nav (flex-1) | actions | hamburger */
@@ -751,7 +756,7 @@ main {
 .s_wd_hero_image {
   position: relative;
   background: var(--o-bg-light);
-  padding-block: 2.5rem;
+  padding-block: 3rem;
   overflow: hidden;
 }
 
@@ -844,7 +849,7 @@ main {
 .display-1 {
   font-family: 'Caveat', cursive;
   font-size: clamp(3rem, 1rem + 6vw, 6rem);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.1;
   color: var(--o-text-dark);
   margin-bottom: 1rem;
@@ -871,7 +876,7 @@ main {
   font-size: clamp(1rem, 0.85rem + 0.5vw, 1.25rem);
   color: var(--o-text);
   max-width: 52ch;
-  margin-inline: auto;
+  /* margin-inline: auto; */
   margin-bottom: 2rem;
 }
 
@@ -905,11 +910,19 @@ main {
 }
 
 .x_wd_green_highlight_scribble_03 {
+  box-sizing: border-box;
+  background-position: center bottom;
+  white-space: nowrap;
   background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/green_highlight_scribble_03.svg');
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: 50% 100%;
-  white-space: nowrap;
+  background-size: contain;
+  color: #111827;
+  font-family: "Caveat";
+  font-size: 4.75rem;
+  font-weight: 700;
+  font: 700 76px / 76px Caveat;
+  line-height: 1;
+  text-align: center;
 }
 
 .x_wd_blue_highlight_scribble_05 {
@@ -929,19 +942,36 @@ main {
 }
 
 .x_wd_display_underline {
-  background-image: url('https://odoocdn.com/openerp_website/static/src/img/graphics/underline.svg');
+  box-sizing: border-box;
+  background-position: center bottom 10%;
+  background-image: url("https://odoocdn.com/openerp_website/static/src/img/graphics/underline.svg");
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: 50% 100%;
-  white-space: nowrap;
+  background-size: contain;
+  color: rgb(17, 24, 39);
+  font-family: "Caveat", cursive;
+  /* Added a standard fallback */
+  font-size: 4.75rem;
+  font-weight: 700;
+  font: 700 76px / 76px "Caveat", cursive;
+  line-height: 1;
 }
 
 .x_wd_display_fireworks_01 {
-  background-image: url('https://odoocdn.com/openerp_website/static/src/img/highlights/display_fireworks_01.svg');
+  position: relative;
+
+  /* display: inline-block;
+  background-image: url('/fireworks.svg');
+  background-size: 365px 50px;
+  background-position: center top;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: 50% 100%;
-  white-space: nowrap;
+  padding-top: 50px;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: 'Caveat', cursive;
+  font-size: 5.5rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center; */
 }
 
 /* ═══════════════════════════════════════
@@ -949,10 +979,9 @@ main {
 ═══════════════════════════════════════ */
 .persona-wrap {
   position: relative;
-  width: fit-content;
-  margin-inline: auto;
-  margin-top: 7rem;
+  margin-top: 3rem;
   z-index: 2;
+  width: min-content;
 }
 
 .persona-wrap--inline {
@@ -977,8 +1006,8 @@ main {
   position: absolute;
   top: -70px;
   left: 20px;
-  width: 60px;
-  height: auto;
+  width: 50px;
+  height: 50px;
   z-index: 3;
   pointer-events: none;
 }
@@ -1021,6 +1050,10 @@ main {
 ═══════════════════════════════════════ */
 .o_section {
   padding-block: clamp(3rem, 5vw, 6rem);
+}
+
+.no-padding-block {
+  padding-block: 0 !important;
 }
 
 .o_section.o_section--bg-light {
@@ -1110,16 +1143,6 @@ main {
   position: relative;
 }
 
-.feature-arrow {
-  display: block;
-  position: absolute;
-  top: -90px;
-  left: 10%;
-  margin-bottom: 0;
-  opacity: 0.5;
-  width: auto;
-}
-
 .img-wide-wrap {
   margin-top: 2rem;
 }
@@ -1194,6 +1217,7 @@ main {
 .s_wd_features {
   background: var(--o-bg-light);
   padding-block: clamp(3rem, 6vw, 6rem);
+  border-radius: 9.5rem 0;
 }
 
 .s_wd_features .display-2 {
@@ -1257,18 +1281,34 @@ main {
 }
 
 .features-all-link {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 2rem;
-  font-weight: 600;
-  color: var(--o-brand);
-  transition: gap var(--o-transition);
+  text-decoration: none;
+  color: rgba(67, 44, 61, var(--link-opacity, 1));
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.1;
+  margin-top: 1.5rem;
+  width: fit-content;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.features-all-image {
+  box-sizing: border-box;
+  display: block;
+  transition: transform 0.2s ease;
 }
 
 .features-all-link:hover {
   gap: 0.75rem;
   color: #7a4f6e;
+}
+
+.features-all-link:hover .features-all-image {
+  transform: translateX(4px);
 }
 
 /* ═══════════════════════════════════════
@@ -1342,10 +1382,12 @@ main {
   z-index: 10;
   background-color: #ffffff;
   text-align: center;
-  color: var(--o-text-dark); /* Using design token for dark text */
+  color: var(--o-text-dark);
+  /* Using design token for dark text */
   padding: 2.5rem 2rem;
   border-radius: var(--o-radius);
-  box-shadow: var(--o-shadow); /* Clean overlay depth drop shadow */
+  box-shadow: var(--o-shadow);
+  /* Clean overlay depth drop shadow */
   max-width: 92%;
   margin-inline: auto;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1357,7 +1399,8 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 50rem; /* Responsive capsule pill shape */
+    border-radius: 50rem;
+    /* Responsive capsule pill shape */
     padding: 4rem 6rem;
     width: max-content;
     max-width: 85%;
@@ -1380,14 +1423,16 @@ main {
 
 /* Floating Sup Text Highlight ("happy" label + scribble arrow) */
 .x_wd_display_sup {
-  display: none; /* Flow hidden on mobile devices */
+  display: none;
+  /* Flow hidden on mobile devices */
   font-family: 'Caveat', cursive;
   font-weight: 700;
   font-size: 1.75rem;
-  color: rgb(251, 177, 48); /* Accent gold color */
+  color: rgb(251, 177, 48);
+  /* Accent gold color */
   position: absolute;
   top: -2.75rem;
-  right:0%;
+  right: 0%;
   transform: translateX(-50%);
   white-space: nowrap;
 }
@@ -1410,7 +1455,8 @@ main {
 .users-sub {
   display: block;
   font-size: clamp(1.15rem, 1.2rem + 0.2vw, 1.45rem);
-  color: var(--o-text); /* Fallback generic system body text color token */
+  color: var(--o-text);
+  /* Fallback generic system body text color token */
   font-weight: 500;
   margin-top: 0.5rem;
 }
@@ -1419,7 +1465,8 @@ main {
    TESTIMONIAL
 ═══════════════════════════════════════ */
 .s_wd_testimonial {
-  padding-block: clamp(3rem, 5vw, 5rem);
+  box-sizing: "border-box";
+  position: "relative";
 }
 
 .testimonial-arrow {
@@ -1473,7 +1520,7 @@ main {
    CALL TO ACTION
 ═══════════════════════════════════════ */
 .s_wd_call_to_action {
-  padding-block: clamp(4rem, 8vw, 8rem);
+  padding-block: clamp(3rem, 4vw, 4rem);
   text-align: center;
   position: relative;
 }
@@ -1482,26 +1529,41 @@ main {
   margin-bottom: 2rem;
 }
 
+.s_wd_call_to_action .x_wd_fireworks_heading {
+  position: relative;
+  background-image: url('/fireworks.png');
+  background-size: min(97%, 100%);
+  background-position: center top;
+  background-repeat: no-repeat;
+
+  padding-top: 4rem;
+  margin-bottom: 2rem;
+
+  font-family: 'Caveat', cursive;
+  color: #111827;
+  line-height: 1.1;
+  font-weight: 700;
+
+  display: inline-block;
+}
+
 .cta-arrow {
   display: block;
   margin-inline: auto;
   margin-block: 1rem;
-  opacity: 0.6;
 }
 
 .s_wd_call_to_action small {
   display: block;
-  margin-top: 0.75rem;
   font-size: 0.8rem;
   color: var(--o-text);
-  opacity: 0.7;
   line-height: 1.6;
 }
 
 /* ═══════════════════════════════════════
    FOOTER
 ═══════════════════════════════════════ */
-.o_footer {
+/* .o_footer {
   background: rgb(26, 28, 36);
   color: rgba(255, 255, 255, 0.7);
   padding-top: 3rem;
@@ -1612,6 +1674,12 @@ main {
 .o_footer_copy {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.3);
+} */
+
+.o_footer_social_media {
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  color: #A9B5BD;
 }
 
 /* ═══════════════════════════════════════

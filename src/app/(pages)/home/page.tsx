@@ -14,6 +14,7 @@ import SixSigma from "@/components/SixSigma";
 import Paperless from "@/components/Paperless";
 import BarcodeSection from "@/components/BarcodeSection";
 import PlanningSection from "@/components/PlanningSection";
+import PersonaBubble from "@/components/PersonaBubble";
 
 function useScrollAnimate() {
   useEffect(() => {
@@ -51,14 +52,19 @@ export default function HomePage() {
         {/* 1. Hero */}
         <HeroSection />
 
+        <div className="relative flex justify-center items-center py-8 bg-[#f4f5f8]">
+          <PersonaBubble text="Check out MES in action!" />
+        </div>
+
         {/* 2. Real-time Simulated Operations */}
-        <FeatureRow
+        <FeatureRow />
+        {/* <FeatureRow
           heading={
             <>
-              <Image
-                src="https://odoocdn.com/openerp_website/static/src/img/arrows/grey_arrow_dot_02.svg"
-                height={120} width={28} className="feature-arrow" alt="" aria-hidden="true" loading="lazy"
-              />
+              <div className="col-lg-6 offset-lg-4">
+                <Image src="https://odoocdn.com/openerp_website/static/src/img/arrows/grey_arrow_dot_02.svg" height={120} width={28} className="o_rtl_flip mx-auto mb-4" alt="" loading="lazy" />
+              </div>
+
               <h2 className="display-2">
                 <span className="x_wd_green_highlight_03">Real-time</span> simulated operations
               </h2>
@@ -72,7 +78,7 @@ export default function HomePage() {
           }
           imgSrc="https://odoocdn.com/openerp_website/static/src/img/apps/manufacturing/operations.webp"
           imgAlt="Real-time simulated operations"
-        />
+        /> */}
 
         {/* 3. Planning / Gantt */}
         <PlanningSection />
@@ -113,13 +119,13 @@ export default function HomePage() {
             </div>
           </div>
         </section> */}
-        <UsersMosaicSection/>
+        <UsersMosaicSection />
 
         {/* 11. Testimonial */}
         <Testimonial />
 
         {/* 12. Industry 4.0 CTA */}
-        <IndustrySection/>
+        <IndustrySection />
 
       </main>
     </>

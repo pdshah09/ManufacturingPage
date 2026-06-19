@@ -63,9 +63,8 @@ export default function FeaturesGrid() {
             {FEATURES.slice(0, 2).map((f, i) => (
               <div
                 key={f.title}
-                className={`s_wd_features_item o_animate o_animate--delay-${i + 1}${
-                  f.overflow ? " s_wd_features_item--overflow" : ""
-                }`}
+                className={`s_wd_features_item o_animate o_animate--delay-${i + 1}${f.overflow ? " s_wd_features_item--overflow" : ""
+                  }`}
               >
                 <div className="s_wd_features_icon">
                   <Image
@@ -86,6 +85,7 @@ export default function FeaturesGrid() {
               </div>
             ))}
           </div>
+
           <div className="features-col">
             {FEATURES.slice(2).map((f, i) => (
               <div
@@ -104,14 +104,23 @@ export default function FeaturesGrid() {
             ))}
           </div>
         </div>
-        <Link href="/app/manufacturing-features" className="features-all-link">
-          See all features
+
+        <Link
+          className="features-all-link"
+          href="https://www.odoo.com/app/manufacturing-features"
+        >
+          <span className="features-all-text">See all features</span>
           <Image
+            className="features-all-image"
+            alt="arrow"
+            height={20}
+            width={40}
             src="https://odoocdn.com/openerp_website/static/src/img/arrows/secondary_arrow_sm_03.svg"
-            width={40} height={20} alt="" aria-hidden="true" loading="lazy"
           />
         </Link>
+
       </div>
+
     </section>
   );
 }

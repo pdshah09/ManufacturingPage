@@ -6,26 +6,17 @@ interface Props {
 }
 
 export default function PersonaBubble({ text, inline }: Props) {
-  if (inline) {
-    return (
-      <div className="persona-wrap persona-wrap--inline">
-        <span className="persona-bubble">
-          <em>{text}</em>
-        </span>
-      </div>
-    );
-  }
 
   return (
 
-    <div className="ml-auto persona-wrap position-relative mx-auto mt-n4 mb-5">
+    <div className="persona-wrap">
       <Image
         className="persona-smile"
         src="/smile.svg"
         alt=""
         aria-hidden="true"
-        width={60}
-        height={60}
+        width={50}
+        height={50}
         loading="lazy"
       />
       <Image

@@ -108,7 +108,7 @@ export default function HeroSection() {
           </div>
 
           {/* Persona bubble anchored below screenshot */}
-          <PersonaBubble text="Check out MES in action!" />
+          {/* <PersonaBubble text="Check out MES in action!" /> */}
         </div>
       </section>
 

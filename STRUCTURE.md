@@ -132,7 +132,7 @@ All styles live here. Sections are named with block comments:
 ## Hard Rules (Never Break Without Explicit Instruction)
 
 1. **All CSS in `globals.css`** — no inline styles, no CSS modules, no styled-components
-2. **Logo file is `Qvoo_long.png`** — always used; never replaced or renamed
+2. **Logo file is `logo.webp`** — always used; never replaced or renamed
 3. **No external UI component libraries** — no shadcn, no MUI, no Radix (raw HTML + Tailwind only)
 4. **Container max-width: 1320px** — enforced via `.container` utility class
 5. **Navbar height: 72px** — do not change

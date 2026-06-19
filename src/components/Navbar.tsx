@@ -11,10 +11,35 @@ export default function Navbar() {
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileMegaOpen, setMobileMegaOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const megaRef = useRef<HTMLLIElement>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    lastScrollY.current = window.scrollY;
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - lastScrollY.current;
+
+        setScrolled(y > 8);
+
+        if (y < 80) {
+          setHidden(false);
+        } else if (Math.abs(delta) > 5) {
+          setHidden(delta > 0); // down = hide, up = show
+          lastScrollY.current = y;
+        }
+
+        ticking = false;
+      });
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -34,10 +59,18 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  // Keep header visible while mobile drawer or mega menu is open
+  useEffect(() => {
+    if (mobileOpen || megaOpen) setHidden(false);
+  }, [mobileOpen, megaOpen]);
+
   const closeAll = () => { setMobileOpen(false); setMobileMegaOpen(false); };
 
   return (
-    <header className={`o_main_header${scrolled ? " o_main_header--scrolled" : ""}`}>
+    <header
+      className={`o_main_header ${scrolled ? "o_main_header--scrolled" : ""} ${hidden ? "o_main_header--hidden" : ""
+        }`}
+    >
       <div className="o_header_inner">
 
         {/* Logo */}
@@ -48,7 +81,7 @@ export default function Navbar() {
           onClick={closeAll}
         >
           <Image
-            src="/images/QVOO_Logo.png"
+            src="/images/logo.webp"
             alt="Qvoo"
             width={140}
             height={80}
