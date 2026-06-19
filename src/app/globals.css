@@ -1020,7 +1020,7 @@ main {
    SECTIONS
 ═══════════════════════════════════════ */
 .o_section {
-  padding-block: clamp(3rem, 6vw, 6rem);
+  padding-block: clamp(3rem, 5vw, 6rem);
 }
 
 .o_section.o_section--bg-light {
@@ -1387,7 +1387,7 @@ main {
   color: rgb(251, 177, 48); /* Accent gold color */
   position: absolute;
   top: -2.75rem;
-  left: 50%;
+  right:0%;
   transform: translateX(-50%);
   white-space: nowrap;
 }

@@ -32,15 +32,15 @@ export default function FeatureRow({
           </div>
 
           <div className="col-media o_animate o_animate--slide-right o_animate--delay-1" style={{ position: "relative" }}>
-            <Image
+            {/* <Image
               src="https://odoocdn.com/openerp_website/static/src/img/arrows/grey_arrow_dot_02.svg"
               height={28}
               width={120}
               className="feature-arrow"
-              alt=""
+              alt="arrow"
               aria-hidden="true"
               loading="lazy"
-            />
+            /> */}
             <Image
               src={imgSrc}
               className="img-thumbnail"
