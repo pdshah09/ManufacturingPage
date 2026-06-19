@@ -28,46 +28,13 @@ export default function Footer() {
       <footer
         id="bottom"
         className="o_footer o_colored_level o_cc o_footer_slideout"
-        style={{
-          boxSizing: "border-box",
-          backgroundImage: "none",
-          backgroundColor: "rgb(37, 39, 51)",
-          color: "rgb(255, 255, 255)",
-          flex: "0 0 auto",
-        }}
+        
       >
         <div
           id="footer"
-          className="container o_not_editable"
-          style={{
-            boxSizing: "border-box",
-            width: "100%",
-            paddingRight: "calc(32px * .5)",
-            paddingLeft: "calc(32px * .5)",
-            marginRight: "auto",
-            marginLeft: "auto",
-            maxWidth: "1320px",
-          }}
+          className="o_footer_container container o_not_editable"
         >
-          {/* <span
-            className="o_logo o_logo_inverse d-block mx-auto o_footer_logo my-5 invert"
-            style={{
-              boxSizing: "border-box",
-              backgroundImage:
-                'url("/images/logo.webp")',
-              backgroundRepeat: "no-repeat",
-              width: "120px",
-              height: "32px",
-              backgroundSize: "auto 30px",
-              backgroundPosition: "100% 0px",
-              position: "relative",
-              display: "block",
-              marginRight: "auto",
-              marginLeft: "auto",
-              marginTop: "3rem",
-              marginBottom: "3rem",
-            }}
-          /> */}
+          
           <Image
             src="/images/logo.webp"
             alt="Qvoo"
@@ -77,64 +44,19 @@ export default function Footer() {
             loading="lazy"
           />
           <div
-            className="row"
-            style={{
-              boxSizing: "border-box",
-              display: "flex",
-              flexWrap: "wrap",
-              marginTop: "calc(-1 * 0)",
-              marginRight: "calc(-.5 * 32px)",
-              marginLeft: "calc(-.5 * 32px)",
-            }}
+            className="o_footer_row row"
           >
             <div
-              className="col-12 col-lg-7 col-xl-6"
-              style={{
-                boxSizing: "border-box",
-                maxWidth: "100%",
-                paddingRight: "calc(32px * .5)",
-                paddingLeft: "calc(32px * .5)",
-                marginTop: "0",
-                flex: "0 0 auto",
-                flexShrink: 0,
-                width: "50%",
-              }}
+              className="o_footer_col col-12 col-lg-7 col-xl-6"
             >
               <div
-                className="row"
-                style={{
-                  boxSizing: "border-box",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  marginTop: "calc(-1 * 0)",
-                  marginRight: "calc(-.5 * 32px)",
-                  marginLeft: "calc(-.5 * 32px)",
-                }}
+                className="o_footer_row row"
               >
                 <div
-                  className="col-12 col-md-4 mb-3 mb-md-0"
-                  style={{
-                    boxSizing: "border-box",
-                    maxWidth: "100%",
-                    paddingRight: "calc(32px * .5)",
-                    paddingLeft: "calc(32px * .5)",
-                    marginTop: "0",
-                    flex: "0 0 auto",
-                    flexShrink: 0,
-                    width: "33.3333%",
-                    marginBottom: "0px",
-                  }}
+                  className="o_footer_incol col-12 col-md-4 mb-3 mb-md-0"
                 >
                   <div
-                    className="row"
-                    style={{
-                      boxSizing: "border-box",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      marginTop: "calc(-1 * 0)",
-                      marginRight: "calc(-.5 * 32px)",
-                      marginLeft: "calc(-.5 * 32px)",
-                    }}
+                    className="o_footer_row row"
                   >
                     <div
                       className="col-6 col-md-12"
@@ -681,19 +603,10 @@ export default function Footer() {
                 </div>
               </div>
             </div>
+
             <div
-              className="col-12 col-lg-5 col-xl-5 offset-xl-1"
-              style={{
-                boxSizing: "border-box",
-                maxWidth: "100%",
-                paddingRight: "calc(32px * .5)",
-                paddingLeft: "calc(32px * .5)",
-                marginTop: "0",
-                flex: "0 0 auto",
-                flexShrink: 0,
-                width: "41.6667%",
-                marginLeft: "8.33333%",
-              }}
+              className="o_footer_side col-12 col-lg-5 col-xl-5 offset-xl-1"
+              
             >
               <div
                 className="d-flex align-items-center justify-content-between"
@@ -2059,300 +1972,8 @@ export default function Footer() {
                 ))}
               </div>
 
-
-              {/* <div
-                className="o_footer_social_media mb-4"
-                style={{ boxSizing: "border-box", marginBottom: "1.5rem" }}
-              >
-                <a
-                  className="me-3"
-                  href="https://www.facebook.com/odoo"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-facebook"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="https://twitter.com/Odoo"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-twitter"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "odoo_ui_icons",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="https://www.linkedin.com/company/odoo"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-linkedin"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="https://github.com/odoo/odoo"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-github"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="https://www.instagram.com/odoo.official"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-instagram"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="https://www.tiktok.com/@odoo"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-tiktok"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "odoo_ui_icons",
-                    }}
-                  />
-                </a>
-                <a
-                  className="me-3"
-                  href="tel:+917940500100"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                    marginRight: "1rem",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-phone"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-                <a
-                  href="https://wa.me/916357077743"
-                  target="_blank"
-                  style={{
-                    boxSizing: "border-box",
-                    textDecoration: "none",
-                    color: "rgb(173, 181, 189)",
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-whatsapp"
-                    style={{
-                      boxSizing: "border-box",
-                      fontVariant: "normal",
-                      display: "inline-block",
-                      fontStyle: "normal",
-                      fontSizeAdjust: "none",
-                      fontLanguageOverride: "normal",
-                      fontKerning: "auto",
-                      fontOpticalSizing: "auto",
-                      fontFeatureSettings: "normal",
-                      fontVariationSettings: "normal",
-                      fontWeight: "normal",
-                      fontStretch: "normal",
-                      lineHeight: 1,
-                      fontSize: "inherit",
-                      textRendering: "auto",
-                      WebkitFontSmoothing: "antialiased",
-                      width: "1.28571em",
-                      textAlign: "center",
-                      fontFamily: "FontAwesome",
-                    }}
-                  />
-                </a>
-              </div> */}
-
             </div>
+
           </div>
         </div>
 

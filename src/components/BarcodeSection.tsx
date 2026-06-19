@@ -99,66 +99,6 @@ export default function BarcodeSection() {
                             <div className="mt-16 pt-32 mx-32">
                                 <PersonaBubble text="Works offline: No WiFi coverage issues!" />
                             </div>
-                            {/* <div
-                                className="s_wd_persona position-relative mt-10"
-                                style={{
-                                    boxSizing: "border-box",
-                                    width: "fit-content",
-                                    position: "relative",
-                                    marginTop: "12rem",
-                                }}
-                            >
-                                <Image
-                                    className="persona-smile"
-                                    src="/smile.svg"
-                                    alt=""
-                                    aria-hidden="true"
-                                    width={50}
-                                    height={50}
-                                    loading="lazy"
-                                />
-                                <img
-                                    className="s_wd_persona_bg"
-                                    src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_persona/bg_blue.svg"
-                                    style={{
-                                        boxSizing: "border-box",
-                                        verticalAlign: "middle",
-                                        inset: "-40px auto auto -60px",
-                                        position: "absolute",
-                                        width: "200px",
-                                    }}
-                                />
-                                <div
-                                    className="position-relative bg-white rounded rounded-pill-md shadow p-3 px-md-5"
-                                    style={{
-                                        boxSizing: "border-box",
-                                        color: "rgb(17, 24, 39)",
-                                        boxShadow: "0 0.5rem 1rem rgba(0, 0, 0, 0.1)",
-                                        position: "relative",
-                                        padding: "1rem",
-                                        paddingRight: "3rem",
-                                        paddingLeft: "3rem",
-                                        backgroundColor: "rgb(255, 255, 255)",
-                                        borderRadius: "50rem",
-                                    }}
-                                >
-                                    <i style={{ boxSizing: "border-box" }}>
-                                        Works offline: No WiFi coverage issues!
-                                    </i>
-                                </div>
-                                <img
-                                    className="s_wd_persona_icon"
-                                    src="https://odoocdn.com/openerp_website/static/src/img/snippets/s_wd_persona/bob.png"
-                                    style={{
-                                        boxSizing: "border-box",
-                                        verticalAlign: "middle",
-                                        inset: "-50px auto auto -30px",
-                                        position: "absolute",
-                                        width: "60px",
-                                        top: "-30px",
-                                    }}
-                                />
-                            </div> */}
 
                         </div>
 
@@ -242,37 +182,6 @@ export default function BarcodeSection() {
                     </div>
                 </div>
             </section>
-            <style
-                dangerouslySetInnerHTML={{
-                    __html: `
-html {
-  box-sizing: border-box;
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  box-sizing: border-box;
-  margin: 0px;
-  font-family: "Inter", "Odoo Unicode Support Noto", sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #374151;
-  text-align: var(--body-text-align);
-  background-color: #ffffff;
-  text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  position: relative;
-  width: 100%;
-  height: 100%;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
-}
-`,
-                }}
-            />
         </>
     );
 }
