@@ -2041,7 +2041,7 @@ export default function Footer() {
                   color: "rgba(255, 255, 255, 0.7)",
                 }}
               >
-                Qvoo's unique value proposition is to be at the same time very
+                Qvoo&apos;s unique value proposition is to be at the same time very
                 easy to use and fully integrated.
               </p>
 

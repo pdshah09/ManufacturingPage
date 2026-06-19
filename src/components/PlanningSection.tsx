@@ -13,7 +13,7 @@ export default function PlanningSection() {
                 <h2 className="display-2 o_animate o_animate--delay-1">
                     Planning that puts you ahead of schedule
                 </h2>
-                <p className="o_animate o_animate--delay-2" style={{ maxWidth: "52ch", margin: "0 auto 1rem" }}>
+                <p className="display-3 mb-5 o_animate o_animate--delay-2" style={{ maxWidth: "62ch", margin: "0 auto 1rem" }}>
                     <strong>Schedule manufacturing orders</strong> and plan resources with finite capacity planning.
                     Fine tune easily with the Gantt chart.
                 </p>

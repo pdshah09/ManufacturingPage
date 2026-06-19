@@ -47,7 +47,6 @@ export default function HomePage() {
   return (
     <>
       <Link className="o_skip_to_content" href="#wrap">Skip to Content</Link>
-
       <main id="wrap">
         {/* 1. Hero */}
         <HeroSection />
