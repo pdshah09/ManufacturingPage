@@ -178,39 +178,7 @@ export default function Paperless() {
                     </div>
                 </div>
             </section>
-            <style
-                dangerouslySetInnerHTML={{
-                    __html: `
-html {
-  box-sizing: border-box;
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  box-sizing: border-box;
-  margin: 0px;
-  font-family: "Inter", "Odoo Unicode Support Noto", sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #374151;
-  text-align: var(--body-text-align);
-  background-color: #ffffff;
-  text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  position: relative;
-  width: 100%;
-  height: 100%;
-  direction: ltr;
-  -webkit-font-smoothing: antialiased;
-}
-`,
-                }}
-            />
         </>
-
     );
 }
 
