@@ -18,7 +18,7 @@ export default function PersonaBubble({ text, inline }: Props) {
 
   return (
 
-    <div className="persona-wrap">
+    <div className="ml-auto persona-wrap position-relative mx-auto mt-n4 mb-5">
       <Image
         className="persona-smile"
         src="/smile.svg"
