@@ -2,27 +2,33 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 
-const BASE_URL =
-  "/images/users_0";
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const SPRITE_COLS = 12;
+const SPRITE_ROWS = 5;
+const SPRITE_PX   = 80; // source sheet cell size in px
+
+const SHEET_W = SPRITE_COLS * SPRITE_PX; // 960px
+const SHEET_H = SPRITE_ROWS * SPRITE_PX; // 400px
+
+const BASE_URL = "/images/users_0";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-type Shape = "square" | "circle" | "tl" | "tr" | "bl" | "br";
+
+type Shape   = "square" | "circle" | "tl" | "tr" | "bl" | "br";
 type Variant = "gray" | "accent";
 
 type PhotoCell = {
   kind: "photo";
-  col: number;
-  row: number;
+  col: number; row: number;
   img: 1 | 2;
-  x: number;
-  y: number;
+  x: number; y: number;
   shape: Shape;
 };
 
 type PlaceholderCell = {
   kind: "placeholder";
-  col: number;
-  row: number;
+  col: number; row: number;
   shape: Shape;
   variant: Variant;
 };
@@ -30,6 +36,7 @@ type PlaceholderCell = {
 type Cell = PhotoCell | PlaceholderCell;
 
 // ─── Shape → Tailwind class ───────────────────────────────────────────────────
+
 const SHAPE: Record<Shape, string> = {
   square: "rounded-[10px]",
   circle: "rounded-full",
@@ -42,6 +49,7 @@ const SHAPE: Record<Shape, string> = {
 const TILE = "w-16 h-16 md:w-20 md:h-20 shrink-0";
 
 // ─── Grid data ────────────────────────────────────────────────────────────────
+
 const CELLS: Cell[] = [
   // Row 1
   { kind: "placeholder", col: 1,  row: 1, shape: "square", variant: "gray"   },
@@ -99,14 +107,11 @@ const CELLS: Cell[] = [
   { kind: "photo",       col: 11, row: 5, img: 2, x: 880, y: 320, shape: "circle" },
 ];
 
-// Indices of photo cells only — used for random swap selection
 const PHOTO_INDICES = CELLS.reduce<number[]>((acc, cell, i) => {
   if (cell.kind === "photo") acc.push(i);
   return acc;
 }, []);
 
-// All unique sprite positions from both sprite sheets combined
-// Each entry = { img, x, y } — pool of real face tiles to cycle through
 const SPRITE_POOL: Array<{ img: 1 | 2; x: number; y: number }> = [
   // users_01.webp  (12 cols × 5 rows, 80px each)
   { img: 1, x:   0, y:   0 }, { img: 1, x:  80, y:   0 }, { img: 1, x: 160, y:   0 },
@@ -152,79 +157,111 @@ const SPRITE_POOL: Array<{ img: 1 | 2; x: number; y: number }> = [
   { img: 2, x: 720, y: 320 }, { img: 2, x: 800, y: 320 }, { img: 2, x: 880, y: 320 },
 ];
 
+// ─── Hook: live tile size via ResizeObserver ───────────────────────────────────
+// Attaches to a single sentinel element (the first tile in the grid).
+// Returns the actual rendered px size, recomputing on every resize/breakpoint.
+
+function useTileSize(sentinelRef: React.RefObject<HTMLDivElement | null>): number {
+  const [tileSize, setTileSize] = useState(SPRITE_PX); // safe SSR default
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver(([entry]) => {
+      // borderBoxSize is the most reliable; fall back to getBoundingClientRect
+      const size =
+        entry.borderBoxSize?.[0]?.inlineSize ??
+        entry.contentRect.width;
+      if (size > 0) setTileSize(Math.round(size));
+    });
+
+    ro.observe(el);
+    // Fire once synchronously to avoid a flash on first paint
+    setTileSize(Math.round(el.getBoundingClientRect().width) || SPRITE_PX);
+
+    return () => ro.disconnect();
+  }, [sentinelRef]);
+
+  return tileSize;
+}
+
 // ─── Animated Photo Tile ──────────────────────────────────────────────────────
+
 interface AnimatedPhotoCellProps {
   cell: PhotoCell;
   swapTrigger: { img: 1 | 2; x: number; y: number } | null;
+  tileSize: number; // live rendered px, passed down from parent
+  isSentinel?: boolean;
+  sentinelRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-function AnimatedPhotoCell({ cell, swapTrigger }: AnimatedPhotoCellProps) {
+function AnimatedPhotoCell({
+  cell,
+  swapTrigger,
+  tileSize,
+  isSentinel,
+  sentinelRef,
+}: AnimatedPhotoCellProps) {
   const shapeClass = SHAPE[cell.shape];
 
-  // Current displayed sprite
   const [current, setCurrent] = useState({ img: cell.img, x: cell.x, y: cell.y });
-  // Pending next sprite (loaded in background layer before swap)
-  const [next, setNext] = useState<{ img: 1 | 2; x: number; y: number } | null>(null);
-  // Blink animation state: "idle" | "fade-out" | "fade-in"
-  const [phase, setPhase] = useState<"idle" | "fade-out" | "fade-in">("idle");
+  const [phase, setPhase]     = useState<"idle" | "out" | "in">("idle");
 
   useEffect(() => {
     if (!swapTrigger) return;
-    // Don't swap to same position
-    if (swapTrigger.img === current.img && swapTrigger.x === current.x && swapTrigger.y === current.y) return;
+    if (
+      swapTrigger.img === current.img &&
+      swapTrigger.x   === current.x   &&
+      swapTrigger.y   === current.y
+    ) return;
 
-    setNext(swapTrigger);
-    // Phase 1: fade out current
-    setPhase("fade-out");
+    setPhase("out");
 
     const t1 = setTimeout(() => {
-      // Phase 2: swap content + fade in
       setCurrent(swapTrigger);
-      setNext(null);
-      setPhase("fade-in");
-    }, 45);
+      setPhase("in");
+    }, 350);
 
     const t2 = setTimeout(() => {
       setPhase("idle");
-    }, 60);
+    }, 700);
 
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [swapTrigger]);
+  }, [swapTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const opacity =
-    phase === "fade-out" ? 0 :
-    phase === "fade-in"  ? 1 :
-    1;
-
-  const placementStyle: React.CSSProperties = {
-    gridColumnStart: cell.col,
-    gridRowStart: cell.row,
-    transition: "opacity 350ms cubic-bezier(0.16, 1, 0.3, 1)",
-    opacity,
-    position: "relative",
-  };
+  // Derive scale and sheet dimensions from the live tile size
+  const scale = tileSize / SPRITE_PX;
+  const bgW   = SHEET_W * scale;
+  const bgH   = SHEET_H * scale;
 
   return (
     <div
+      ref={isSentinel ? sentinelRef : undefined}
       aria-hidden="true"
       className={`${TILE} ${shapeClass} border border-black/[0.04] bg-no-repeat overflow-hidden`}
       style={{
-        ...placementStyle,
-        backgroundImage: `url(${BASE_URL}${current.img}.webp)`,
-        backgroundPosition: `-${current.x-35}px -${current.y}px`,
-        backgroundSize: "60rem 25rem",
+        gridColumnStart:    cell.col,
+        gridRowStart:       cell.row,
+        opacity:            phase === "out" ? 0 : 1,
+        transition:         "opacity 350ms cubic-bezier(0.16, 1, 0.3, 1)",
+        willChange:         "opacity",
+        position:           "relative",
+        backgroundImage:    `url(${BASE_URL}${current.img}.webp)`,
+        backgroundSize:     `${bgW}px ${bgH}px`,
+        backgroundPosition: `-${current.x * scale}px -${current.y * scale}px`,
       }}
     />
   );
 }
 
 // ─── Placeholder Tile ─────────────────────────────────────────────────────────
+
 function PlaceholderCell({ cell }: { cell: PlaceholderCell }) {
-  const shapeClass = SHAPE[cell.shape];
   return (
     <div
       aria-hidden="true"
-      className={`${TILE} ${shapeClass} ${
+      className={`${TILE} ${SHAPE[cell.shape]} ${
         cell.variant === "accent" ? "bg-[#7B5878]" : "bg-[#EAEAF0]"
       }`}
       style={{ gridColumnStart: cell.col, gridRowStart: cell.row }}
@@ -232,21 +269,25 @@ function PlaceholderCell({ cell }: { cell: PlaceholderCell }) {
   );
 }
 
-// ─── Swap state map type ──────────────────────────────────────────────────────
+// ─── Swap state map ───────────────────────────────────────────────────────────
+
 type SwapMap = Record<number, { img: 1 | 2; x: number; y: number } | null>;
 
 // ─── Main export ──────────────────────────────────────────────────────────────
-export default function UserAvatarsGrid() {
-  // Per-cell swap trigger keyed by CELLS index
-  const [swaps, setSwaps] = useState<SwapMap>({});
-  const usedSpritesRef = useRef<Map<number, { img: 1 | 2; x: number; y: number }>>(new Map());
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Pick a random sprite from pool that isn't currently shown at this index
+export default function UserAvatarsGrid() {
+  const [swaps, setSwaps]           = useState<SwapMap>({});
+  const usedSpritesRef              = useRef<Map<number, { img: 1 | 2; x: number; y: number }>>(new Map());
+  const intervalRef                 = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Sentinel ref: points at the first photo tile so ResizeObserver can read real size
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const tileSize    = useTileSize(sentinelRef);
+
   const pickSprite = useCallback((cellIndex: number) => {
-    const cell = CELLS[cellIndex] as PhotoCell;
+    const cell    = CELLS[cellIndex] as PhotoCell;
     const current = usedSpritesRef.current.get(cellIndex) ?? { img: cell.img, x: cell.x, y: cell.y };
-    let candidate;
+    let candidate: typeof current;
     let attempts = 0;
     do {
       candidate = SPRITE_POOL[Math.floor(Math.random() * SPRITE_POOL.length)];
@@ -254,61 +295,60 @@ export default function UserAvatarsGrid() {
     } while (
       attempts < 20 &&
       candidate.img === current.img &&
-      candidate.x === current.x &&
-      candidate.y === current.y
+      candidate.x   === current.x   &&
+      candidate.y   === current.y
     );
     usedSpritesRef.current.set(cellIndex, candidate);
     return candidate;
   }, []);
 
   useEffect(() => {
-    // Stagger-swap 1–3 random photo tiles every 1.8s
     intervalRef.current = setInterval(() => {
-      const count = 1 + Math.floor(Math.random() * 3); // 1, 2, or 3 tiles
+      const count    = 1 + Math.floor(Math.random() * 3);
       const shuffled = [...PHOTO_INDICES].sort(() => Math.random() - 0.5).slice(0, count);
 
-      const newSwaps: SwapMap = {};
       shuffled.forEach((cellIndex, i) => {
-        // Stagger each tile 150ms apart
         setTimeout(() => {
           const sprite = pickSprite(cellIndex);
           setSwaps((prev) => ({ ...prev, [cellIndex]: sprite }));
         }, i * 150);
       });
-
-      void newSwaps; // suppress lint
     }, 1800);
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [pickSprite]);
+
+  // Index of the first photo cell — used as the ResizeObserver sentinel
+  const firstPhotoIndex = PHOTO_INDICES[0];
 
   return (
     <section
       className="user_mosaic w-full overflow-hidden bg-white py-6 md:py-10"
       aria-label="Our community members"
     >
-        <div
-          className="mx-auto grid min-w-[200px] gap-4 md:gap-5 px-4 isolation-auto overflow-hidden"
-          style={{
-            gridTemplateColumns: "repeat(11, minmax(64px, 80px))",
-            gridAutoRows: "minmax(64px, 70px)",
-            justifyContent: "center",
-          }}
-        >
-          {CELLS.map((cell, i) =>
-            cell.kind === "photo" ? (
-              <AnimatedPhotoCell
-                key={i}
-                cell={cell}
-                swapTrigger={swaps[i] ?? null}
-              />
-            ) : (
-              <PlaceholderCell key={i} cell={cell} />
-            )
-          )}
-        </div>
+      <div
+        className="mx-auto grid min-w-[200px] gap-4 md:gap-5 px-4"
+        style={{
+          gridTemplateColumns: "repeat(11, minmax(64px, 80px))",
+          gridAutoRows:        "minmax(64px, 70px)",
+          justifyContent:      "center",
+        }}
+      >
+        {CELLS.map((cell, i) =>
+          cell.kind === "photo" ? (
+            <AnimatedPhotoCell
+              key={i}
+              cell={cell}
+              swapTrigger={swaps[i] ?? null}
+              tileSize={tileSize}
+              isSentinel={i === firstPhotoIndex}
+              sentinelRef={sentinelRef}
+            />
+          ) : (
+            <PlaceholderCell key={i} cell={cell} />
+          )
+        )}
+      </div>
     </section>
   );
 }
