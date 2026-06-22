@@ -200,7 +200,7 @@ export default function Footer() {
         {/* Copyright bar */}
         <div className="o_footer_copyright o_not_editable">
           <div className="o_footer_copyright_inner">
-            <a href="https://www.odoo.com/app/website" className="o_footer_copyright_link">
+            <a href="https://www.qvoo.io/" className="o_footer_copyright_link">
               Website made with
               <img src="/images/logo.webp" alt="Qvoo" width={47} height={15}
                 className="o_footer_logo_img invert" loading="lazy" />

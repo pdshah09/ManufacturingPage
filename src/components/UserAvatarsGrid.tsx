@@ -6,12 +6,13 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 
 const SPRITE_COLS = 12;
 const SPRITE_ROWS = 5;
-const SPRITE_PX   = 80; // source sheet cell size in px
+const SPRITE_PX   = 80; // fallback; overridden by measured sheet dimensions
 
-const SHEET_W = SPRITE_COLS * SPRITE_PX; // 960px
-const SHEET_H = SPRITE_ROWS * SPRITE_PX; // 400px
+const SHEET_W = SPRITE_COLS * SPRITE_PX;
+const SHEET_H = SPRITE_ROWS * SPRITE_PX;
 
-const BASE_URL = "/images/users_0";
+// const BASE_URL = "/images/users_0";
+const BASE_URL = "";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -113,7 +114,7 @@ const PHOTO_INDICES = CELLS.reduce<number[]>((acc, cell, i) => {
 }, []);
 
 const SPRITE_POOL: Array<{ img: 1 | 2; x: number; y: number }> = [
-  // users_01.webp  (12 cols × 5 rows, 80px each)
+  // users_01.webp
   { img: 1, x:   0, y:   0 }, { img: 1, x:  80, y:   0 }, { img: 1, x: 160, y:   0 },
   { img: 1, x: 240, y:   0 }, { img: 1, x: 320, y:   0 }, { img: 1, x: 400, y:   0 },
   { img: 1, x: 480, y:   0 }, { img: 1, x: 560, y:   0 }, { img: 1, x: 640, y:   0 },
@@ -158,18 +159,15 @@ const SPRITE_POOL: Array<{ img: 1 | 2; x: number; y: number }> = [
 ];
 
 // ─── Hook: live tile size via ResizeObserver ───────────────────────────────────
-// Attaches to a single sentinel element (the first tile in the grid).
-// Returns the actual rendered px size, recomputing on every resize/breakpoint.
 
 function useTileSize(sentinelRef: React.RefObject<HTMLDivElement | null>): number {
-  const [tileSize, setTileSize] = useState(SPRITE_PX); // safe SSR default
+  const [tileSize, setTileSize] = useState(SPRITE_PX);
 
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
 
     const ro = new ResizeObserver(([entry]) => {
-      // borderBoxSize is the most reliable; fall back to getBoundingClientRect
       const size =
         entry.borderBoxSize?.[0]?.inlineSize ??
         entry.contentRect.width;
@@ -177,7 +175,6 @@ function useTileSize(sentinelRef: React.RefObject<HTMLDivElement | null>): numbe
     });
 
     ro.observe(el);
-    // Fire once synchronously to avoid a flash on first paint
     setTileSize(Math.round(el.getBoundingClientRect().width) || SPRITE_PX);
 
     return () => ro.disconnect();
@@ -186,12 +183,29 @@ function useTileSize(sentinelRef: React.RefObject<HTMLDivElement | null>): numbe
   return tileSize;
 }
 
+// ─── Hook: measure actual sprite sheet cell size from the loaded image ─────────
+
+function useCellPx(img: 1 | 2): number {
+  const [cellPx, setCellPx] = useState(SPRITE_PX);
+
+  useEffect(() => {
+    const im = new window.Image();
+    im.onload = () => {
+      const measured = Math.round(im.naturalWidth / SPRITE_COLS);
+      if (measured > 0) setCellPx(measured);
+    };
+    im.src = `${BASE_URL}${img}.webp`;
+  }, [img]);
+
+  return cellPx;
+}
+
 // ─── Animated Photo Tile ──────────────────────────────────────────────────────
 
 interface AnimatedPhotoCellProps {
   cell: PhotoCell;
   swapTrigger: { img: 1 | 2; x: number; y: number } | null;
-  tileSize: number; // live rendered px, passed down from parent
+  tileSize: number;
   isSentinel?: boolean;
   sentinelRef?: React.RefObject<HTMLDivElement | null>;
 }
@@ -207,6 +221,11 @@ function AnimatedPhotoCell({
 
   const [current, setCurrent] = useState({ img: cell.img, x: cell.x, y: cell.y });
   const [phase, setPhase]     = useState<"idle" | "out" | "in">("idle");
+
+  // Measure actual cell size for this sheet
+  const cellPx = useCellPx(current.img);
+  const sheetW = SPRITE_COLS * cellPx;
+  const sheetH = SPRITE_ROWS * cellPx;
 
   useEffect(() => {
     if (!swapTrigger) return;
@@ -230,10 +249,10 @@ function AnimatedPhotoCell({
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [swapTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Derive scale and sheet dimensions from the live tile size
-  const scale = tileSize / SPRITE_PX;
-  const bgW   = SHEET_W * scale;
-  const bgH   = SHEET_H * scale;
+  // Scale off measured cellPx, not hardcoded SPRITE_PX
+  const scale = tileSize / cellPx;
+  const bgW   = sheetW * scale;
+  const bgH   = sheetH * scale;
 
   return (
     <div
@@ -280,7 +299,6 @@ export default function UserAvatarsGrid() {
   const usedSpritesRef              = useRef<Map<number, { img: 1 | 2; x: number; y: number }>>(new Map());
   const intervalRef                 = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Sentinel ref: points at the first photo tile so ResizeObserver can read real size
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const tileSize    = useTileSize(sentinelRef);
 
@@ -318,7 +336,6 @@ export default function UserAvatarsGrid() {
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, [pickSprite]);
 
-  // Index of the first photo cell — used as the ResizeObserver sentinel
   const firstPhotoIndex = PHOTO_INDICES[0];
 
   return (
@@ -335,16 +352,17 @@ export default function UserAvatarsGrid() {
         }}
       >
         {CELLS.map((cell, i) =>
-          cell.kind === "photo" ? (
-            <AnimatedPhotoCell
-              key={i}
-              cell={cell}
-              swapTrigger={swaps[i] ?? null}
-              tileSize={tileSize}
-              isSentinel={i === firstPhotoIndex}
-              sentinelRef={sentinelRef}
-            />
-          ) : (
+          // cell.kind === "photo" ? (
+          //   <AnimatedPhotoCell
+          //     key={i}
+          //     cell={cell}
+          //     swapTrigger={swaps[i] ?? null}
+          //     tileSize={tileSize}
+          //     isSentinel={i === firstPhotoIndex}
+          //     sentinelRef={sentinelRef}
+          //   />
+          // ) :
+          (
             <PlaceholderCell key={i} cell={cell} />
           )
         )}
